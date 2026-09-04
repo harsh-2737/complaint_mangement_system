@@ -1,0 +1,151 @@
+﻿@model complaint_mangement_system.ViewModels.ComplaintviewModel
+
+@{
+    ViewData["Title"] = "Create Complaint";
+    Layout = "~/Views/User/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            Create Complaint
+        </h2>
+
+        <p class="text-muted">
+            Submit your complaint and we will review it.
+        </p>
+
+    </div>
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4">
+
+            <form asp-controller="User"
+                  asp-action="Create"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <!-- Complaint Title -->
+                <div class="mb-3">
+
+                    <label asp-for="complaintname"
+                           class="form-label fw-semibold">
+                    </label>
+
+                    <input asp-for="complaintname"
+                           class="form-control"
+                           placeholder="Enter complaint title" />
+
+                    <span asp-validation-for="complaintname"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Category -->
+                <div class="mb-3">
+
+                    <label asp-for="categoryid"
+                           class="form-label fw-semibold">
+                        Category
+                    </label>
+
+                    <select asp-for="categoryid"
+                            asp-items="ViewBag.Categories"
+                            class="form-select">
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="categoryid"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Description -->
+                <div class="mb-3">
+
+                    <label asp-for="description"
+                           class="form-label fw-semibold">
+                    </label>
+
+                    <textarea asp-for="description"
+                              class="form-control"
+                              rows="5"
+                              placeholder="Describe your complaint"></textarea>
+
+                    <span asp-validation-for="description"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Priority -->
+                <div class="mb-4">
+
+                    <label asp-for="priority"
+                           class="form-label fw-semibold">
+                    </label>
+
+                    <input asp-for="priority"
+                           type="number"
+                           min="1"
+                           max="10"
+                           class="form-control"
+                           placeholder="Enter priority 1-10" />
+
+                    <span asp-validation-for="priority"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="bi bi-send me-1"></i>
+                        Submit Complaint
+
+                    </button>
+
+                    <a asp-controller="User"
+                       asp-action="Dashboard"
+                       class="btn btn-outline-secondary">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

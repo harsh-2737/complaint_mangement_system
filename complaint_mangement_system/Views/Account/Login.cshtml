@@ -1,0 +1,85 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@model complaint_mangement_system.ViewModels.LoginViewModel
+
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
+    <div class="col-12 col-sm-10 col-md-7 col-lg-5 col-xl-4">
+        <div class="card border-0 shadow-lg rounded-4">
+            <div class="card-body p-4 p-md-5">
+
+                <div class="text-center mb-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+                         style="width:70px;height:70px;">
+                        <i class="bi bi-person-fill fs-2"></i>
+                    </div>
+                    <h2 class="fw-bold mt-3 mb-1">Welcome Back!</h2>
+                    <p class="text-muted">Login to your account</p>
+                </div>
+
+                <form asp-controller="Account" asp-action="Login" method="post">
+
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="email" class="form-label fw-semibold">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-envelope text-primary"></i>
+                            </span>
+                            <input asp-for="email"
+                                   class="form-control"
+                                   placeholder="Enter your email" />
+                        </div>
+                        <span asp-validation-for="email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="password" class="form-label fw-semibold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-lock text-primary"></i>
+                            </span>
+                            <input asp-for="password"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Enter your password" />
+                        </div>
+                        <span asp-validation-for="password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-3">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Login
+                        </button>
+                    </div>
+
+                </form>
+
+                <hr class="my-4">
+
+                <div class="text-center">
+                    <p class="text-muted mb-2">Don't have an account?</p>
+                    <a asp-controller="Account"
+                       asp-action="Register"
+                       class="btn btn-outline-primary rounded-3 px-4">
+                        Create Account
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

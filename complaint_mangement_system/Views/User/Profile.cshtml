@@ -1,0 +1,118 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model complaint_mangement_system.Models.User
+
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/User/_Layout.cshtml";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7 col-lg-6">
+
+            <div class="card border-0 shadow-lg rounded-4">
+
+                <div class="card-body p-5">
+
+                    <div class="text-center mb-4">
+
+                        <div class="bg-primary text-white rounded-circle
+                            d-inline-flex align-items-center
+                            justify-content-center"
+                             style="width:90px;height:90px;">
+
+                            <i class="bi bi-person-fill fs-1"></i>
+
+                        </div>
+
+                        <h2 class="fw-bold mt-3">
+                            My Profile
+                        </h2>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Full Name
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.name
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Email
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.email
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Country Code
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.country_code
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Phone Number
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.phone_no
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="text-muted">
+                            Role
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.role
+                        </div>
+
+                    </div>
+
+                    <a asp-controller="User"
+                       asp-action="Dashboard"
+                       class="btn btn-primary w-100">
+
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Back to Dashboard
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
