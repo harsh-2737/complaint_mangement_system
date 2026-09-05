@@ -1,25 +1,32 @@
-﻿using complaint_mangement_system.Data;
-using complaint_mangement_system.Models;
+﻿using complaint_mangement_system.Repositories;
 using complaint_mangement_system.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-
+                
 namespace complaint_mangement_system.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IAccountRepository _accountRepository;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountController(IAccountRepository accountRepository)
         {
-            _context = context;
+            _accountRepository = accountRepository;
         }
+
+        // =========================
+        // LOGIN GET
+        // =========================
 
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
+
+
+        // =========================
+        // LOGIN POST
+        // =========================
 
         [HttpPost]
         public IActionResult Login(LoginViewModel l1)
@@ -29,9 +36,10 @@ namespace complaint_mangement_system.Controllers
                 return View(l1);
             }
 
-            var user = _context.Users
-                .FirstOrDefault(u => u.email == l1.email);
+            // Get user using repository
+            var user = _accountRepository.GetUserByEmail(l1.email);
 
+            // Email does not exist
             if (user == null)
             {
                 TempData["RegisterMessage"] =
@@ -40,6 +48,7 @@ namespace complaint_mangement_system.Controllers
                 return RedirectToAction("Register");
             }
 
+            // Check password
             if (user.password != l1.password)
             {
                 ModelState.AddModelError(
@@ -50,21 +59,35 @@ namespace complaint_mangement_system.Controllers
                 return View(l1);
             }
 
-            HttpContext.Session.SetInt32("userid", user.userid);
+            // Store userid in session
+            HttpContext.Session.SetInt32(
+                "userid",
+                user.userid
+            );
 
+            // Redirect according to role
             if (user.role == "User")
             {
-                return RedirectToAction("DashBoard", "User");
+                return RedirectToAction(
+                    "DashBoard",
+                    "User"
+                );
             }
 
             if (user.role == "Staff")
             {
-                return RedirectToAction("DashBoard", "Staff");
+                return RedirectToAction(
+                    "DashBoard",
+                    "Staff"
+                );
             }
 
             if (user.role == "Admin")
             {
-                return RedirectToAction("DashBoard", "Admin");
+                return RedirectToAction(
+                    "DashBoard",
+                    "Admin"
+                );
             }
 
             ModelState.AddModelError(
@@ -75,11 +98,21 @@ namespace complaint_mangement_system.Controllers
             return View(l1);
         }
 
+
+        // =========================
+        // REGISTER GET
+        // =========================
+
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
+
+        // =========================
+        // REGISTER POST
+        // =========================
 
         [HttpPost]
         public IActionResult Register(RegisterViewModel r1)
@@ -99,8 +132,9 @@ namespace complaint_mangement_system.Controllers
                 return View(r1);
             }
 
-            var existingUser = _context.Users
-                .FirstOrDefault(u => u.email == r1.email);
+            // Check whether email already exists
+            var existingUser =
+                _accountRepository.GetUserByEmail(r1.email);
 
             if (existingUser != null)
             {
@@ -112,23 +146,21 @@ namespace complaint_mangement_system.Controllers
                 return View(r1);
             }
 
-            var user = new User
-            {
-                name = r1.name,
-                email = r1.email,
-                password = r1.password,
-                country_code = r1.country_code,
-                phone_no = r1.phone_no,
-                role = "User"
-            };
+            // Register user using repository
+            var user =
+                _accountRepository.Register(r1);
 
-            _context.Users.Add(user);
+            // Store userid in session
+            HttpContext.Session.SetInt32(
+                "userid",
+                user.userid
+            );
 
-            _context.SaveChanges();
-
-            HttpContext.Session.SetInt32("userid", user.userid);
-
-            return RedirectToAction("DashBoard", "User");
+            // Go to user dashboard
+            return RedirectToAction(
+                "DashBoard",
+                "User"
+            );
         }
     }
 }
