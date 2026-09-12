@@ -1,27 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace complaint_mangement_system.Migrations
 {
     /// <inheritdoc />
-    public partial class addcomplaint : Migration
+    public partial class only_one_admin : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categorys",
+                name: "Categories",
                 columns: table => new
                 {
                     categoryid = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    categoryname = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categorys", x => x.categoryid);
+                    table.PrimaryKey("PK_Categories", x => x.categoryid);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,10 +48,14 @@ namespace complaint_mangement_system.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     categoryid = table.Column<int>(type: "int", nullable: false),
                     userid = table.Column<int>(type: "int", nullable: false),
+                    staffid = table.Column<int>(type: "int", nullable: true),
                     complaintname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     priority = table.Column<int>(type: "int", nullable: false),
-                    status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    createdat = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    updatedat = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    resolvedat = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,13 +77,36 @@ namespace complaint_mangement_system.Migrations
                 {
                     table.PrimaryKey("PK_Feedbacks", x => x.feedbackid);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    userid = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    country_code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    phone_no = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    role = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.userid);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "userid", "country_code", "email", "name", "password", "phone_no", "role" },
+                values: new object[] { 1, "+91", "admin@gmail.com", "Admin", "1234", "9316143733", "Admin" });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Categorys");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Comments");
@@ -88,6 +116,9 @@ namespace complaint_mangement_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "Feedbacks");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

@@ -1,0 +1,159 @@
+﻿
+@model complaint_mangement_system.Models.User
+
+@{
+    ViewData["Title"] = "Create User";
+    Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Create User</h2>
+
+        <p class="text-muted">
+            Create a new user account.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8 col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <form asp-controller="Admin"
+                          asp-action="CreateUser"
+                          method="post">
+
+                        <div asp-validation-summary="All"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="name"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="name"
+                                   class="form-control"
+                                   placeholder="Enter full name" />
+
+                            <span asp-validation-for="name"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="email"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="email"
+                                   class="form-control"
+                                   placeholder="Enter email" />
+
+                            <span asp-validation-for="email"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="password"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="password"
+                                   class="form-control"
+                                   placeholder="Enter password" />
+
+                            <span asp-validation-for="password"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="country_code"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <select asp-for="country_code"
+                                    class="form-select">
+
+                                <option value="">Select country code</option>
+                                <option value="+91">India (+91)</option>
+                                <option value="+1">USA/Canada (+1)</option>
+                                <option value="+44">United Kingdom (+44)</option>
+                                <option value="+61">Australia (+61)</option>
+                                <option value="+81">Japan (+81)</option>
+                                <option value="+86">China (+86)</option>
+                                <option value="+971">UAE (+971)</option>
+
+                            </select>
+
+                            <span asp-validation-for="country_code"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label asp-for="phone_no"
+                                   class="form-label fw-semibold">
+                            </label>
+
+                            <input asp-for="phone_no"
+                                   class="form-control"
+                                   placeholder="Enter phone number" />
+
+                            <span asp-validation-for="phone_no"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bi bi-person-plus-fill me-1"></i>
+                                Create User
+
+                            </button>
+
+                            <a asp-controller="Admin"
+                               asp-action="Users"
+                               class="btn btn-outline-secondary">
+
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

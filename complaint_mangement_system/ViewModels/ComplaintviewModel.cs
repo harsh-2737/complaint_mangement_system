@@ -1,12 +1,9 @@
-﻿using complaint_mangement_system.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace complaint_mangement_system.ViewModels
 {
     public class ComplaintviewModel
     {
-
-       
         public int complaintid { get; set; }
 
         [Required(ErrorMessage = "Please select category.")]
@@ -34,8 +31,9 @@ namespace complaint_mangement_system.ViewModels
         [Display(Name = "Status")]
         public string status { get; set; }
 
-        [Required(ErrorMessage ="Category is required.")]
-        [Display(Name ="Category")]
+        [Required(ErrorMessage = "Category is required.")]
+        [Display(Name = "Category")]
         public string categoryname { get; set; }
     }
+
 }

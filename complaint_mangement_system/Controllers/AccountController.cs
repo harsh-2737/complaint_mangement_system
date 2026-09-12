@@ -13,20 +13,16 @@ namespace complaint_mangement_system.Controllers
             _accountRepository = accountRepository;
         }
 
-        // =========================
-        // LOGIN GET
-        // =========================
 
+        public IActionResult Index()
+        {
+            return RedirectToAction("Login");
+        }
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
-
-
-        // =========================
-        // LOGIN POST
-        // =========================
 
         [HttpPost]
         public IActionResult Login(LoginViewModel l1)
@@ -36,10 +32,10 @@ namespace complaint_mangement_system.Controllers
                 return View(l1);
             }
 
-            // Get user using repository
+            
             var user = _accountRepository.GetUserByEmail(l1.email);
 
-            // Email does not exist
+            
             if (user == null)
             {
                 TempData["RegisterMessage"] =
@@ -48,7 +44,7 @@ namespace complaint_mangement_system.Controllers
                 return RedirectToAction("Register");
             }
 
-            // Check password
+           
             if (user.password != l1.password)
             {
                 ModelState.AddModelError(
@@ -59,13 +55,13 @@ namespace complaint_mangement_system.Controllers
                 return View(l1);
             }
 
-            // Store userid in session
+            
             HttpContext.Session.SetInt32(
                 "userid",
                 user.userid
             );
 
-            // Redirect according to role
+          
             if (user.role == "User")
             {
                 return RedirectToAction(
@@ -99,9 +95,7 @@ namespace complaint_mangement_system.Controllers
         }
 
 
-        // =========================
-        // REGISTER GET
-        // =========================
+       
 
         [HttpGet]
         public IActionResult Register()
@@ -110,9 +104,6 @@ namespace complaint_mangement_system.Controllers
         }
 
 
-        // =========================
-        // REGISTER POST
-        // =========================
 
         [HttpPost]
         public IActionResult Register(RegisterViewModel r1)
@@ -132,7 +123,7 @@ namespace complaint_mangement_system.Controllers
                 return View(r1);
             }
 
-            // Check whether email already exists
+            
             var existingUser =
                 _accountRepository.GetUserByEmail(r1.email);
 
@@ -146,21 +137,28 @@ namespace complaint_mangement_system.Controllers
                 return View(r1);
             }
 
-            // Register user using repository
+            
             var user =
                 _accountRepository.Register(r1);
 
-            // Store userid in session
+          
             HttpContext.Session.SetInt32(
                 "userid",
                 user.userid
             );
 
-            // Go to user dashboard
+            
             return RedirectToAction(
                 "DashBoard",
                 "User"
             );
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Login", "Account");
         }
     }
 }

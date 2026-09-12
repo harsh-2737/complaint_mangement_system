@@ -15,9 +15,6 @@ namespace complaint_mangement_system.Controllers
             _context = context;
         }
 
-        // ----------------------------------------------------
-        // INDEX
-        // ----------------------------------------------------
         public IActionResult Index()
         {
             int? userid = HttpContext.Session.GetInt32("userid");
@@ -415,12 +412,7 @@ namespace complaint_mangement_system.Controllers
         // ----------------------------------------------------
         // LOGOUT
         // ----------------------------------------------------
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-
-            return RedirectToAction("Login", "Account");
-        }
+       
 
 
         // ----------------------------------------------------

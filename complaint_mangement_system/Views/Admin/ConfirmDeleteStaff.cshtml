@@ -1,0 +1,137 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model complaint_mangement_system.Models.User
+
+@{
+    ViewData["Title"] = "Delete Staff";
+    Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7 col-lg-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-5">
+
+                    <div class="text-center mb-4">
+
+                        <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
+
+                        <h2 class="fw-bold mt-3">
+                            Delete Staff
+                        </h2>
+
+                        <p class="text-muted">
+                            Are you sure you want to delete this staff member?
+                        </p>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            User ID
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.userid
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Full Name
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.name
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Email
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.email
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="text-muted">
+                            Phone Number
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.phone_no
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="text-muted">
+                            Role
+                        </label>
+
+                        <div class="form-control bg-light">
+                            @Model.role
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex gap-2">
+
+                        <form asp-controller="Admin"
+                              asp-action="DeleteStaff"
+                              asp-route-id="@Model.userid"
+                              method="post"
+                              class="flex-grow-1">
+
+                            @Html.AntiForgeryToken()
+
+                            <button type="submit"
+                                    class="btn btn-danger w-100">
+
+                                <i class="bi bi-trash-fill me-2"></i>
+                                Delete Staff
+
+                            </button>
+
+                        </form>
+
+                        <a asp-controller="Admin"
+                           asp-action="Staffs"
+                           class="btn btn-outline-secondary">
+
+                            Cancel
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    ```
+
+</div>

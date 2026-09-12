@@ -1,8 +1,6 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-}
 
 
 <!DOCTYPE html>
@@ -49,7 +47,7 @@
 
             <div class="nav flex-column gap-2">
 
-                <a asp-controller="User"
+                <a asp-controller="Admin"
                    asp-action="Dashboard"
                    class="nav-link text-white p-3 rounded">
 
@@ -58,25 +56,26 @@
 
                 </a>
 
-                <a asp-controller="User"
-                   asp-action="Create"
+               <a asp-controller="Admin"
+                    asp-action="Users"
                    class="nav-link text-white p-3 rounded">
 
-                    <i class="bi bi-plus-circle me-2"></i>
-                    New Complaint
+                    <i class="bi bi-people-fill me-2"></i>
+                    Manage User
 
                 </a>
 
-                <a asp-controller="User"
-                   asp-action="Complaints"
+                <a asp-controller="Admin"
+                   asp-action="Staffs"
                    class="nav-link text-white p-3 rounded">
 
-                    <i class="bi bi-clipboard-check me-2"></i>
-                    My Complaints
+                    <i class="bi bi-person-badge-fill me-2"></i>
+                    Manage Staff
 
                 </a>
 
-                <a asp-controller="User"
+
+                <a asp-controller="Admin"
                    asp-action="Profile"
                    class="nav-link text-white p-3 rounded">
 
