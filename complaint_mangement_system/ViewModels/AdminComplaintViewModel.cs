@@ -2,7 +2,7 @@
 
 namespace complaint_mangement_system.ViewModels
 {
-    public class ComplaintviewModel
+    public class AdminComplaintViewModel
     {
         public int complaintid { get; set; }
 
@@ -11,6 +11,16 @@ namespace complaint_mangement_system.ViewModels
 
         [Required]
         public int userid { get; set; }
+
+        [Required(ErrorMessage = "User name is required.")]
+        [Display(Name = "User Name")]
+        public string username { get; set; }
+
+        [Display(Name = "Staff ID")]
+        public int? staffid { get; set; }
+
+        [Display(Name = "Staff Name")]
+        public string staffname { get; set; }
 
         [Required(ErrorMessage = "Please enter your complaint title.")]
         [StringLength(100, ErrorMessage = "Your complaint title characters must under 100.")]
@@ -35,5 +45,4 @@ namespace complaint_mangement_system.ViewModels
         [Display(Name = "Category")]
         public string categoryname { get; set; }
     }
-
 }

@@ -8,7 +8,7 @@
     ViewData["Title"] = "Register";
 }
 
-@model complaint_mangement_system.ViewModels.RegisterViewModel
+@model complaint_mangement_system.ViewModels.UserRegisterViewModel
 
 <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
     <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
@@ -24,7 +24,7 @@
                     <p class="text-muted">Register for the Complaint Management System</p>
                 </div>
 
-                <form asp-controller="Account" asp-action="Register" method="post">
+                <form asp-controller="Account" asp-action="RegisterAsUser" method="post">
 
                     <div asp-validation-summary="All" class="text-danger mb-3"></div>
 

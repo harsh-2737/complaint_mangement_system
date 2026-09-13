@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "My Profile";
-    Layout = "~/Views/User/_Layout.cshtml";
+    Layout = "~/Views/Admin/_Layout.cshtml";
 }
 
 <div class="container py-5">
@@ -22,7 +22,7 @@
                             justify-content-center"
                              style="width:90px;height:90px;">
 
-                            <i class="bi bi-person-fill fs-1"></i>
+                            <i class="bi bi-shield-fill-check fs-1"></i>
 
                         </div>
 
@@ -30,19 +30,36 @@
                             My Profile
                         </h2>
 
+                        <p class="text-muted">
+                            Update your admin account information
+                        </p>
+
                     </div>
 
-                    <form asp-controller="User"
+                    <form asp-controller="Admin"
                           asp-action="Profile"
                           method="post">
 
-                        <input type="hidden" asp-for="userid" />
-
-                        
+                        <input type="hidden"
+                               asp-for="userid" />
 
                         <div class="mb-3">
 
-                            <label asp-for="name" class="text-muted">
+                            <label class="text-muted">
+                                Admin ID
+                            </label>
+
+                            <input type="text"
+                                   class="form-control bg-light"
+                                   value="@Model.userid"
+                                   readonly />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="name"
+                                   class="text-muted">
                                 Full Name
                             </label>
 
@@ -50,13 +67,15 @@
                                    class="form-control" />
 
                             <span asp-validation-for="name"
-                                  class="text-danger"></span>
+                                  class="text-danger">
+                            </span>
 
                         </div>
 
                         <div class="mb-3">
 
-                            <label asp-for="email" class="text-muted">
+                            <label asp-for="email"
+                                   class="text-muted">
                                 Email
                             </label>
 
@@ -65,16 +84,19 @@
                                    class="form-control" />
 
                             <span asp-validation-for="email"
-                                  class="text-danger"></span>
+                                  class="text-danger">
+                            </span>
 
                         </div>
 
                         <div class="mb-3">
 
-                            <label asp-for="country_code" class="text-muted">
+                            <label asp-for="country_code"
+                                   class="text-muted">
                                 Country Code
                             </label>
 
+                            
                             <select asp-for="country_code" class="form-select">
                                 <option value="">Select country code</option>
                                 <option value="+91">India (+91)</option>
@@ -87,13 +109,15 @@
                             </select>
 
                             <span asp-validation-for="country_code"
-                                  class="text-danger"></span>
+                                  class="text-danger">
+                            </span>
 
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-4">
 
-                            <label asp-for="phone_no" class="text-muted">
+                            <label asp-for="phone_no"
+                                   class="text-muted">
                                 Phone Number
                             </label>
 
@@ -101,50 +125,27 @@
                                    class="form-control" />
 
                             <span asp-validation-for="phone_no"
-                                  class="text-danger"></span>
-
-                        </div>
-
-                        <div class="mb-4">
-
-                            <label class="text-muted">
-                                Role
-                            </label>
-
-                            <input type="text"
-                                   class="form-control bg-light"
-                                   value="@Model.role"
-                                   readonly />
+                                  class="text-danger">
+                            </span>
 
                         </div>
 
                         <div class="row g-2">
-
                             <div class="col-md-6">
-
-                                <button type="submit"
-                                        class="btn btn-primary w-100">
-
+                                <button type="submit" class="btn btn-primary w-100">
                                     <i class="bi bi-pencil-square me-2"></i>
                                     Update
-
                                 </button>
-
                             </div>
 
                             <div class="col-md-6">
-
-                                <a asp-controller="User"
-                                   asp-action="Dashboard"
+                                <a asp-controller="Admin"
+                                   asp-action="DashBoard"
                                    class="btn btn-secondary w-100">
-
                                     <i class="bi bi-arrow-left me-2"></i>
                                     Back to Dashboard
-
                                 </a>
-
                             </div>
-
                         </div>
 
                     </form>

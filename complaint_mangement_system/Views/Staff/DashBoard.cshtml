@@ -1,0 +1,170 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<complaint_mangement_system.ViewModels.StaffComplaintViewModel>
+
+@{
+    ViewData["Title"] = "Staff Dashboard";
+    Layout = "~/Views/Staff/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold">Staff Dashboard</h2>
+        <p class="text-muted mb-0">
+            Welcome, @ViewBag.StaffName
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted">Total Complaints</h6>
+                        <h2 class="fw-bold">
+                            @ViewBag.TotalComplaints
+                        </h2>
+                    </div>
+
+                    <i class="bi bi-clipboard-data fs-1 text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted">Pending Complaints</h6>
+                        <h2 class="fw-bold">
+                            @ViewBag.PendingComplaints
+                        </h2>
+                    </div>
+
+                    <i class="bi bi-hourglass-split fs-1 text-warning"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted">Resolved Complaints</h6>
+                        <h2 class="fw-bold">
+                            @ViewBag.ResolvedComplaints
+                        </h2>
+                    </div>
+
+                    <i class="bi bi-check-circle fs-1 text-success"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Recent Complaints</h4>
+
+            <a asp-controller="Staff"
+               asp-action="Complaints"
+               class="btn btn-primary">
+                View All
+            </a>
+        </div>
+
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="alert alert-info">
+                No complaints found.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Complaint ID</th>
+                            <th>User</th>
+                            <th>Complaint</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var complaint in Model)
+                        {
+                            <tr>
+                                <td>@complaint.complaintid</td>
+
+                                <td>@complaint.username</td>
+
+                                <td>@complaint.complaintname</td>
+
+                                <td>@complaint.priority</td>
+
+                                <td>
+                                    @if (complaint.status == "Pending")
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            Pending
+                                        </span>
+                                    }
+                                    else if (complaint.status == "Resolved")
+                                    {
+                                        <span class="badge bg-success">
+                                            Resolved
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            @complaint.status
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <a asp-controller="Staff"
+                                       asp-action="Details"
+                                       asp-route-id="@complaint.complaintid"
+                                       class="btn btn-info btn-sm">
+                                        Details
+                                    </a>
+
+                                    <a asp-controller="Staff"
+                                       asp-action="Update"
+                                       asp-route-id="@complaint.complaintid"
+                                       class="btn btn-warning btn-sm">
+                                        Update
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        }
+
+    </div>
+</div>

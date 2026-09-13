@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "My Profile";
-    Layout = "~/Views/User/_Layout.cshtml";
+    Layout = "~/Views/Staff/_Layout.cshtml";
 }
 
 <div class="container py-5">
@@ -22,7 +22,7 @@
                             justify-content-center"
                              style="width:90px;height:90px;">
 
-                            <i class="bi bi-person-fill fs-1"></i>
+                            <i class="bi bi-person-badge-fill fs-1"></i>
 
                         </div>
 
@@ -30,15 +30,17 @@
                             My Profile
                         </h2>
 
+                        <p class="text-muted">
+                            Staff account information
+                        </p>
+
                     </div>
 
-                    <form asp-controller="User"
+                    <form asp-controller="Staff"
                           asp-action="Profile"
                           method="post">
 
                         <input type="hidden" asp-for="userid" />
-
-                        
 
                         <div class="mb-3">
 
@@ -134,7 +136,7 @@
 
                             <div class="col-md-6">
 
-                                <a asp-controller="User"
+                                <a asp-controller="Staff"
                                    asp-action="Dashboard"
                                    class="btn btn-secondary w-100">
 

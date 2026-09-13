@@ -16,6 +16,7 @@ namespace complaint_mangement_system.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<StaffRequest> StaffRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         { 

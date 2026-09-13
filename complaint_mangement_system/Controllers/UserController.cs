@@ -56,7 +56,7 @@ namespace complaint_mangement_system.Controllers
             ViewBag.ResolvedComplaints =
                 complaints.Count(c => c.status == "Resolved");
 
-            List<ComplaintviewModel> complaintViewModels = new List<ComplaintviewModel>();
+            List<UserComplaintViewModel> complaintViewModels = new List<UserComplaintViewModel>();
 
             foreach (var complaint in complaints)
             {
@@ -64,7 +64,7 @@ namespace complaint_mangement_system.Controllers
                     .FirstOrDefault(c =>
                         c.categoryid == complaint.categoryid);
 
-                complaintViewModels.Add(new ComplaintviewModel
+                complaintViewModels.Add(new UserComplaintViewModel
                 {
                     complaintid = complaint.complaintid,
 
@@ -108,7 +108,7 @@ namespace complaint_mangement_system.Controllers
         // ----------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ComplaintviewModel c1)
+        public IActionResult Create(UserComplaintViewModel c1)
         {
             int? userid = HttpContext.Session.GetInt32("userid");
 
@@ -168,9 +168,10 @@ namespace complaint_mangement_system.Controllers
         // ----------------------------------------------------
         // PROFILE
         // ----------------------------------------------------
+        [HttpGet]
         public IActionResult Profile()
         {
-            int? userid = HttpContext.Session.GetInt32("userid");
+            var userid = HttpContext.Session.GetInt32("userid");
 
             if (userid == null)
             {
@@ -178,16 +179,53 @@ namespace complaint_mangement_system.Controllers
             }
 
             var user = _context.Users
-                .FirstOrDefault(u => u.userid == userid.Value);
+                .FirstOrDefault(u => u.userid == userid && u.role == "User");
 
             if (user == null)
             {
-                return RedirectToAction("Login", "Account");
+                return NotFound();
             }
 
             return View(user);
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Profile(User user)
+        {
+            ModelState.Remove("password");
+            ModelState.Remove("role");
+
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+
+            var userid = HttpContext.Session.GetInt32("userid");
+
+            if (userid == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var existingUser = _context.Users
+                .FirstOrDefault(u => u.userid == userid && u.role == "User");
+
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
+            existingUser.name = user.name;
+            existingUser.email = user.email;
+            existingUser.country_code = user.country_code;
+            existingUser.phone_no = user.phone_no;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Dashboard");
+        }
 
         // ----------------------------------------------------
         // COMPLAINTS
@@ -205,7 +243,7 @@ namespace complaint_mangement_system.Controllers
                 .Where(c => c.userid == userid.Value)
                 .ToList();
 
-            List<ComplaintviewModel> complaintViewModels = new List<ComplaintviewModel>();
+            List<UserComplaintViewModel> complaintViewModels = new List<UserComplaintViewModel>();
 
             foreach (var complaint in complaints)
             {
@@ -213,7 +251,7 @@ namespace complaint_mangement_system.Controllers
                     .FirstOrDefault(c =>
                         c.categoryid == complaint.categoryid);
 
-                ComplaintviewModel viewModel = new ComplaintviewModel
+                UserComplaintViewModel viewModel = new UserComplaintViewModel
                 {
                     complaintid = complaint.complaintid,
                     categoryid = complaint.categoryid,
@@ -261,7 +299,7 @@ namespace complaint_mangement_system.Controllers
                 .FirstOrDefault(c =>
                     c.categoryid == complaint.categoryid);
 
-            ComplaintviewModel viewModel = new ComplaintviewModel
+            UserComplaintViewModel viewModel = new UserComplaintViewModel
             {
                 complaintid = complaint.complaintid,
 
@@ -288,7 +326,7 @@ namespace complaint_mangement_system.Controllers
         // ----------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(ComplaintviewModel c1)
+        public IActionResult Update(UserComplaintViewModel c1)
         {
             int? userid = HttpContext.Session.GetInt32("userid");
 

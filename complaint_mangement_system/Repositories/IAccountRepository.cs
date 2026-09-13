@@ -9,6 +9,13 @@ namespace complaint_mangement_system.Repositories
 
         User? GetUserByEmail(string email);
 
-        User Register(RegisterViewModel model);
+        User RegisterAsUser(UserRegisterViewModel model);
+        User RegisterAsStaff(StaffRegisterViewModel model);
+
+        List<Category> GetCategories();
+
+        StaffRequest CreateStaffRequest(int userid, int categoryid);
+
+        StaffRequest? GetStaffRequest(int userid);
     }
 }

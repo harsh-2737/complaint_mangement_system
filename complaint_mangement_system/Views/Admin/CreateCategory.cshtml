@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Create Category";
+    Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+@model complaint_mangement_system.Models.Category
+
+<h2>Create Category</h2>
+
+<form asp-action="CreateCategory" method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="categoryname" class="form-label"></label>
+
+        <input asp-for="categoryname" class="form-control" />
+
+        <span asp-validation-for="categoryname"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="description" class="form-label"></label>
+
+        <textarea asp-for="description"
+                  class="form-control"></textarea>
+
+        <span asp-validation-for="description"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Create
+    </button>
+
+    <a asp-action="Categories" class="btn btn-secondary">
+        Back
+    </a>
+
+</form>

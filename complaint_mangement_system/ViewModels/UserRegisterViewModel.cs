@@ -2,7 +2,7 @@
 
 namespace complaint_mangement_system.ViewModels
 {
-    public class RegisterViewModel
+    public class UserRegisterViewModel
     {
 
         [Required(ErrorMessage = "Name field must required.")]
@@ -33,5 +33,9 @@ namespace complaint_mangement_system.ViewModels
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Your Phone Number must contain exctly 10 digit.")]
         public string phone_no { get; set; }
+
+        [Required(ErrorMessage = "Role must be selected.")]
+        [Display(Name = "Role")]
+        public string role { get; set; }
     }
 }

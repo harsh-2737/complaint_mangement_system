@@ -1,0 +1,143 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model complaint_mangement_system.ViewModels.StaffRegisterViewModel
+
+@{
+    ViewData["Title"] = "Staff Registration";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow">
+                <div class="card-header">
+                    <h3 class="text-center">Staff Registration</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <form asp-action="RegisterAsStaff" method="post">
+
+                        <div asp-validation-summary="All"
+                             class="text-danger">
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="name"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="name"
+                                   class="form-control" />
+
+                            <span asp-validation-for="name"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="email"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="email"
+                                   class="form-control" />
+
+                            <span asp-validation-for="email"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="password"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="password"
+                                   class="form-control" />
+
+                            <span asp-validation-for="password"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="country_code"
+                                   class="form-label">
+                            </label>
+
+                            <select asp-for="country_code" class="form-select">
+                                <option value="">Select country code</option>
+                                <option value="+91">India (+91)</option>
+                                <option value="+1">USA/Canada (+1)</option>
+                                <option value="+44">United Kingdom (+44)</option>
+                                <option value="+61">Australia (+61)</option>
+                                <option value="+81">Japan (+81)</option>
+                                <option value="+86">China (+86)</option>
+                                <option value="+971">UAE (+971)</option>
+                            </select>
+
+                            <span asp-validation-for="country_code"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="phone_no"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="phone_no"
+                                   class="form-control" />
+
+                            <span asp-validation-for="phone_no"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="categoryid" class="form-label"></label>
+
+                            <select asp-for="categoryid" class="form-select">
+
+                                <option value="">Select Category</option>
+
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.categoryid">
+                                        @category.categoryname
+                                    </option>
+                                }
+
+                            </select>
+
+                            <span asp-validation-for="categoryid"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Register as Staff
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -69,9 +69,18 @@
                 <div class="text-center">
                     <p class="text-muted mb-2">Don't have an account?</p>
                     <a asp-controller="Account"
-                       asp-action="Register"
+                       asp-action="RegisterAsUser"
                        class="btn btn-outline-primary rounded-3 px-4">
-                        Create Account
+                        Create Account as User
+                    </a>
+                </div>
+
+                <div class="text-center">
+                    <p class="text-muted mb-2">Don't have an account?</p>
+                    <a asp-controller="Account"
+                       asp-action="RegisterAsStaff"
+                       class="btn btn-outline-primary rounded-3 px-4">
+                        Create Account as Staff
                     </a>
                 </div>
 

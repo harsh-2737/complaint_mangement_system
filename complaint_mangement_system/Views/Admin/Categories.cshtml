@@ -1,0 +1,52 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "List all Categories";
+    Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+@model List<complaint_mangement_system.Models.Category>
+
+<h2>Categories</h2>
+
+<a asp-action="CreateCategory" class="btn btn-primary mb-3">
+    Create Category
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Category ID</th>
+            <th>Category Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.categoryid</td>
+                <td>@category.categoryname</td>
+                <td>@category.description</td>
+                <td>
+                    <a asp-action="EditCategory"
+                       asp-route-id="@category.categoryid"
+                       class="btn btn-warning">
+                        Edit
+                    </a>
+
+                    <a asp-action="ConfirmDeleteCategory"
+                       asp-route-id="@category.categoryid"
+                       class="btn btn-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
