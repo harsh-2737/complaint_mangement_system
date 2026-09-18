@@ -1,10 +1,16 @@
 using complaint_mangement_system.Data;
 using complaint_mangement_system.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -13,8 +19,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 var app = builder.Build();
 
@@ -32,7 +36,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession();
 
 app.UseAuthentication();
 

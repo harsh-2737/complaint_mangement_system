@@ -1,11 +1,14 @@
-﻿using complaint_mangement_system.Data;
+﻿using System.Security.Claims;
+using complaint_mangement_system.Data;
 using complaint_mangement_system.Models;
 using complaint_mangement_system.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace complaint_mangement_system.Controllers
 {
+    [Authorize(Roles = "Staff")]
     public class StaffController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -15,42 +18,24 @@ namespace complaint_mangement_system.Controllers
             _context = context;
         }
 
-        // ====================================================
-        // INDEX
-        // ====================================================
-
         public IActionResult Index()
         {
-            int? userid = HttpContext.Session.GetInt32("userid");
-
-            if (userid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             return RedirectToAction("Dashboard");
         }
 
-        // ====================================================
-        // DASHBOARD
-        // ====================================================
-
         public IActionResult Dashboard()
         {
-            int? userid = HttpContext.Session.GetInt32("userid");
-            int? categoryid = HttpContext.Session.GetInt32("categoryid");
-
-            if (userid == null || categoryid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            int userid = GetUserId();
+            int categoryid = GetCategoryId();
 
             var complaints = _context.Complaints
-                .Where(c => c.categoryid == categoryid.Value)
+                .Where(c => c.categoryid == categoryid)
                 .ToList();
 
-            ViewBag.StaffName =
-                HttpContext.Session.GetString("staffname");
+            var staff = _context.Users
+                .FirstOrDefault(u => u.userid == userid);
+
+            ViewBag.StaffName = staff?.name;
 
             ViewBag.TotalComplaints =
                 complaints.Count;
@@ -93,22 +78,15 @@ namespace complaint_mangement_system.Controllers
             return View(complaintViewModels);
         }
 
-        // ====================================================
-        // PROFILE
-        // ====================================================
-
         [HttpGet]
         public IActionResult Profile()
         {
-            var userid = HttpContext.Session.GetInt32("userid");
-
-            if (userid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            int userid = GetUserId();
 
             var staff = _context.Users
-                .FirstOrDefault(u => u.userid == userid && u.role == "Staff");
+                .FirstOrDefault(u =>
+                    u.userid == userid &&
+                    u.role == "Staff");
 
             if (staff == null)
             {
@@ -130,15 +108,12 @@ namespace complaint_mangement_system.Controllers
                 return View(staff);
             }
 
-            var userid = HttpContext.Session.GetInt32("userid");
-
-            if (userid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            int userid = GetUserId();
 
             var existingStaff = _context.Users
-                .FirstOrDefault(u => u.userid == userid && u.role == "Staff");
+                .FirstOrDefault(u =>
+                    u.userid == userid &&
+                    u.role == "Staff");
 
             if (existingStaff == null)
             {
@@ -155,22 +130,12 @@ namespace complaint_mangement_system.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        // ====================================================
-        // COMPLAINTS
-        // ====================================================
-
         public IActionResult Complaints()
         {
-            int? userid = HttpContext.Session.GetInt32("userid");
-            int? categoryid = HttpContext.Session.GetInt32("categoryid");
-
-            if (userid == null || categoryid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            int categoryid = GetCategoryId();
 
             var complaints = _context.Complaints
-                .Where(c => c.categoryid == categoryid.Value)
+                .Where(c => c.categoryid == categoryid)
                 .ToList();
 
             List<StaffComplaintViewModel> complaintViewModels =
@@ -206,25 +171,15 @@ namespace complaint_mangement_system.Controllers
             return View(complaintViewModels);
         }
 
-        // ====================================================
-        // DETAILS
-        // ====================================================
-
         [HttpGet]
         public IActionResult Details(int id)
         {
-            int? userid = HttpContext.Session.GetInt32("userid");
-            int? categoryid = HttpContext.Session.GetInt32("categoryid");
-
-            if (userid == null || categoryid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            int categoryid = GetCategoryId();
 
             var complaint = _context.Complaints
                 .FirstOrDefault(c =>
                     c.complaintid == id &&
-                    c.categoryid == categoryid.Value);
+                    c.categoryid == categoryid);
 
             if (complaint == null)
             {
@@ -256,25 +211,15 @@ namespace complaint_mangement_system.Controllers
             return View(viewModel);
         }
 
-        // ====================================================
-        // UPDATE
-        // ====================================================
-
         [HttpGet]
         public IActionResult Update(int id)
         {
-            int? userid = HttpContext.Session.GetInt32("userid");
-            int? categoryid = HttpContext.Session.GetInt32("categoryid");
-
-            if (userid == null || categoryid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            int categoryid = GetCategoryId();
 
             var complaint = _context.Complaints
                 .FirstOrDefault(c =>
                     c.complaintid == id &&
-                    c.categoryid == categoryid.Value);
+                    c.categoryid == categoryid);
 
             if (complaint == null)
             {
@@ -308,20 +253,15 @@ namespace complaint_mangement_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(StaffComplaintViewModel c1)
+        public IActionResult Update(
+            StaffComplaintViewModel c1)
         {
-            int? userid = HttpContext.Session.GetInt32("userid");
-            int? categoryid = HttpContext.Session.GetInt32("categoryid");
-
-            if (userid == null || categoryid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            int categoryid = GetCategoryId();
 
             var complaint = _context.Complaints
                 .FirstOrDefault(c =>
                     c.complaintid == c1.complaintid &&
-                    c.categoryid == categoryid.Value);
+                    c.categoryid == categoryid);
 
             if (complaint == null)
             {
@@ -343,17 +283,33 @@ namespace complaint_mangement_system.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        // ====================================================
-        // LOGOUT
-        // ====================================================
-
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(
+                "Cookies"
+            );
 
             return RedirectToAction(
                 "Login",
                 "Account"
+            );
+        }
+
+        private int GetUserId()
+        {
+            return int.Parse(
+                User.FindFirstValue(
+                    ClaimTypes.NameIdentifier
+                )
+            );
+        }
+
+        private int GetCategoryId()
+        {
+            return int.Parse(
+                User.FindFirstValue(
+                    "categoryid"
+                )
             );
         }
     }

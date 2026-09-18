@@ -1,5 +1,9 @@
-﻿using complaint_mangement_system.Repositories;
+﻿using System.Security.Claims;
+using complaint_mangement_system.Models;
+using complaint_mangement_system.Repositories;
 using complaint_mangement_system.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace complaint_mangement_system.Controllers
@@ -25,7 +29,7 @@ namespace complaint_mangement_system.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel l1)
+        public async Task<IActionResult> Login(LoginViewModel l1)
         {
             if (!ModelState.IsValid)
             {
@@ -54,13 +58,10 @@ namespace complaint_mangement_system.Controllers
 
             if (user.role == "User")
             {
-                HttpContext.Session.SetInt32(
-                    "userid",
-                    user.userid
-                );
+                await SignInUser(user);
 
                 return RedirectToAction(
-                    "DashBoard",
+                    "Dashboard",
                     "User"
                 );
             }
@@ -92,18 +93,13 @@ namespace complaint_mangement_system.Controllers
 
                 if (staffRequest.status == "Approved")
                 {
-                    HttpContext.Session.SetInt32(
-                        "userid",
-                        user.userid
-                    );
-
-                    HttpContext.Session.SetInt32(
-                        "categoryid",
+                    await SignInUser(
+                        user,
                         staffRequest.categoryid
                     );
 
                     return RedirectToAction(
-                        "DashBoard",
+                        "Dashboard",
                         "Staff"
                     );
                 }
@@ -111,13 +107,10 @@ namespace complaint_mangement_system.Controllers
 
             if (user.role == "Admin")
             {
-                HttpContext.Session.SetInt32(
-                    "userid",
-                    user.userid
-                );
+                await SignInUser(user);
 
                 return RedirectToAction(
-                    "DashBoard",
+                    "Dashboard",
                     "Admin"
                 );
             }
@@ -128,6 +121,52 @@ namespace complaint_mangement_system.Controllers
             );
 
             return View(l1);
+        }
+
+        private async Task SignInUser(
+            User user,
+            int? categoryid = null
+        )
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(
+                    ClaimTypes.NameIdentifier,
+                    user.userid.ToString()
+                ),
+
+                new Claim(
+                    ClaimTypes.Name,
+                    user.name
+                ),
+
+                new Claim(
+                    ClaimTypes.Role,
+                    user.role
+                )
+            };
+
+            if (categoryid.HasValue)
+            {
+                claims.Add(
+                    new Claim(
+                        "categoryid",
+                        categoryid.Value.ToString()
+                    )
+                );
+            }
+
+            var identity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
+
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal
+            );
         }
 
         [HttpGet]
@@ -148,7 +187,7 @@ namespace complaint_mangement_system.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegisterAsUser(
+        public async Task<IActionResult> RegisterAsUser(
             UserRegisterViewModel r1)
         {
             r1.role = "User";
@@ -176,13 +215,10 @@ namespace complaint_mangement_system.Controllers
             var user =
                 _accountRepository.RegisterAsUser(r1);
 
-            HttpContext.Session.SetInt32(
-                "userid",
-                user.userid
-            );
+            await SignInUser(user);
 
             return RedirectToAction(
-                "DashBoard",
+                "Dashboard",
                 "User"
             );
         }
@@ -236,9 +272,17 @@ namespace complaint_mangement_system.Controllers
         {
             return View();
         }
-        public IActionResult Logout()
+
+        public IActionResult AccessDenied()
         {
-            HttpContext.Session.Clear();
+            return View();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
 
             return RedirectToAction(
                 "Login",

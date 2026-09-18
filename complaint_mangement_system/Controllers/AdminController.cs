@@ -1,10 +1,14 @@
-﻿using complaint_mangement_system.Data;
+﻿using System.Security.Claims;
+using complaint_mangement_system.Data;
 using complaint_mangement_system.Models;
 using complaint_mangement_system.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace complaint_mangement_system.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,10 +27,6 @@ namespace complaint_mangement_system.Controllers
         {
             return View();
         }
-
-        // =========================
-        // USERS
-        // =========================
 
         public IActionResult Users()
         {
@@ -57,7 +57,9 @@ namespace complaint_mangement_system.Controllers
             }
 
             var existingUser =
-                _context.Users.FirstOrDefault(u => u.email == user.email);
+                _context.Users.FirstOrDefault(
+                    u => u.email == user.email
+                );
 
             if (existingUser != null)
             {
@@ -79,7 +81,9 @@ namespace complaint_mangement_system.Controllers
         public IActionResult ConfirmDeleteUser(int id)
         {
             var user = _context.Users
-                .FirstOrDefault(u => u.userid == id && u.role == "User");
+                .FirstOrDefault(u =>
+                    u.userid == id &&
+                    u.role == "User");
 
             if (user == null)
             {
@@ -94,7 +98,9 @@ namespace complaint_mangement_system.Controllers
         public IActionResult DeleteUser(int id)
         {
             var user = _context.Users
-                .FirstOrDefault(u => u.userid == id && u.role == "User");
+                .FirstOrDefault(u =>
+                    u.userid == id &&
+                    u.role == "User");
 
             if (user == null)
             {
@@ -106,11 +112,6 @@ namespace complaint_mangement_system.Controllers
 
             return RedirectToAction("Users");
         }
-
-
-        // =========================
-        // STAFF
-        // =========================
 
         public IActionResult Staffs()
         {
@@ -141,7 +142,9 @@ namespace complaint_mangement_system.Controllers
             }
 
             var existingStaff =
-                _context.Users.FirstOrDefault(u => u.email == staff.email);
+                _context.Users.FirstOrDefault(
+                    u => u.email == staff.email
+                );
 
             if (existingStaff != null)
             {
@@ -163,7 +166,9 @@ namespace complaint_mangement_system.Controllers
         public IActionResult ConfirmDeleteStaff(int id)
         {
             var staff = _context.Users
-                .FirstOrDefault(u => u.userid == id && u.role == "Staff");
+                .FirstOrDefault(u =>
+                    u.userid == id &&
+                    u.role == "Staff");
 
             if (staff == null)
             {
@@ -178,7 +183,9 @@ namespace complaint_mangement_system.Controllers
         public IActionResult DeleteStaff(int id)
         {
             var staff = _context.Users
-                .FirstOrDefault(u => u.userid == id && u.role == "Staff");
+                .FirstOrDefault(u =>
+                    u.userid == id &&
+                    u.role == "Staff");
 
             if (staff == null)
             {
@@ -191,15 +198,11 @@ namespace complaint_mangement_system.Controllers
             return RedirectToAction("Staffs");
         }
 
-
-        // =========================
-        // CATEGORIES
-        // =========================
-
         [HttpGet]
         public IActionResult Categories()
         {
-            var categories = _context.Categories.ToList();
+            var categories =
+                _context.Categories.ToList();
 
             return View(categories);
         }
@@ -221,7 +224,8 @@ namespace complaint_mangement_system.Controllers
 
             var existingCategory =
                 _context.Categories.FirstOrDefault(
-                    c => c.categoryname == category.categoryname
+                    c => c.categoryname ==
+                         category.categoryname
                 );
 
             if (existingCategory != null)
@@ -243,8 +247,10 @@ namespace complaint_mangement_system.Controllers
         [HttpGet]
         public IActionResult EditCategory(int id)
         {
-            var category = _context.Categories
-                .FirstOrDefault(c => c.categoryid == id);
+            var category =
+                _context.Categories.FirstOrDefault(
+                    c => c.categoryid == id
+                );
 
             if (category == null)
             {
@@ -256,7 +262,8 @@ namespace complaint_mangement_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditCategory(Category category)
+        public IActionResult EditCategory(
+            Category category)
         {
             if (!ModelState.IsValid)
             {
@@ -265,8 +272,11 @@ namespace complaint_mangement_system.Controllers
 
             var existingCategory =
                 _context.Categories.FirstOrDefault(
-                    c => c.categoryname == category.categoryname &&
-                         c.categoryid != category.categoryid
+                    c =>
+                        c.categoryname ==
+                        category.categoryname &&
+                        c.categoryid !=
+                        category.categoryid
                 );
 
             if (existingCategory != null)
@@ -279,16 +289,22 @@ namespace complaint_mangement_system.Controllers
                 return View(category);
             }
 
-            var oldCategory = _context.Categories
-                .FirstOrDefault(c => c.categoryid == category.categoryid);
+            var oldCategory =
+                _context.Categories.FirstOrDefault(
+                    c => c.categoryid ==
+                         category.categoryid
+                );
 
             if (oldCategory == null)
             {
                 return NotFound();
             }
 
-            oldCategory.categoryname = category.categoryname;
-            oldCategory.description = category.description;
+            oldCategory.categoryname =
+                category.categoryname;
+
+            oldCategory.description =
+                category.description;
 
             _context.SaveChanges();
 
@@ -296,10 +312,13 @@ namespace complaint_mangement_system.Controllers
         }
 
         [HttpGet]
-        public IActionResult ConfirmDeleteCategory(int id)
+        public IActionResult ConfirmDeleteCategory(
+            int id)
         {
-            var category = _context.Categories
-                .FirstOrDefault(c => c.categoryid == id);
+            var category =
+                _context.Categories.FirstOrDefault(
+                    c => c.categoryid == id
+                );
 
             if (category == null)
             {
@@ -313,8 +332,10 @@ namespace complaint_mangement_system.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteCategory(int id)
         {
-            var category = _context.Categories
-                .FirstOrDefault(c => c.categoryid == id);
+            var category =
+                _context.Categories.FirstOrDefault(
+                    c => c.categoryid == id
+                );
 
             if (category == null)
             {
@@ -333,63 +354,85 @@ namespace complaint_mangement_system.Controllers
                 .Where(r => r.status == "Pending")
                 .ToList();
 
-            var staffRequests = requests.Select(r => new StaffRequestViewModel
-            {
-                staffid = r.userid,
+            var staffRequests =
+                requests.Select(r =>
+                    new StaffRequestViewModel
+                    {
+                        staffid = r.userid,
 
-                name = _context.Users
-                    .Where(u => u.userid == r.userid)
-                    .Select(u => u.name)
-                    .FirstOrDefault(),
+                        name = _context.Users
+                            .Where(u =>
+                                u.userid == r.userid)
+                            .Select(u => u.name)
+                            .FirstOrDefault(),
 
-                categoryname = _context.Categories
-                    .Where(c => c.categoryid == r.categoryid)
-                    .Select(c => c.categoryname)
-                    .FirstOrDefault(),
+                        categoryname =
+                            _context.Categories
+                                .Where(c =>
+                                    c.categoryid ==
+                                    r.categoryid)
+                                .Select(c =>
+                                    c.categoryname)
+                                .FirstOrDefault(),
 
-                status = r.status
-            }).ToList();
+                        status = r.status
+                    }
+                ).ToList();
 
             return View(staffRequests);
         }
 
         [HttpGet]
-        public IActionResult ApproveStaff(int staffid)
+        public IActionResult ApproveStaff(
+            int staffid)
         {
-            var request = _context.StaffRequests
-                .FirstOrDefault(r =>
-                    r.userid == staffid &&
-                    r.status == "Pending");
+            var request =
+                _context.StaffRequests.FirstOrDefault(
+                    r =>
+                        r.userid == staffid &&
+                        r.status == "Pending"
+                );
 
             if (request == null)
             {
                 return NotFound();
             }
 
-            var staff = _context.Users
-                .FirstOrDefault(u => u.userid == staffid);
+            var staff =
+                _context.Users.FirstOrDefault(
+                    u => u.userid == staffid
+                );
 
-            var category = _context.Categories
-                .FirstOrDefault(c => c.categoryid == request.categoryid);
+            var category =
+                _context.Categories.FirstOrDefault(
+                    c =>
+                        c.categoryid ==
+                        request.categoryid
+                );
 
-            var model = new StaffRequestViewModel
-            {
-                staffid = staffid,
-                name = staff.name,
-                categoryname = category.categoryname,
-                status = request.status
-            };
+            var model =
+                new StaffRequestViewModel
+                {
+                    staffid = staffid,
+                    name = staff.name,
+                    categoryname =
+                        category.categoryname,
+                    status = request.status
+                };
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult ConfirmApproveStaff(int staffid)
+        public IActionResult ConfirmApproveStaff(
+            int staffid)
         {
-            var request = _context.StaffRequests
-                .FirstOrDefault(r =>
-                    r.userid == staffid &&
-                    r.status == "Pending");
+            var request =
+                _context.StaffRequests.FirstOrDefault(
+                    r =>
+                        r.userid == staffid &&
+                        r.status == "Pending"
+                );
 
             if (request == null)
             {
@@ -404,42 +447,56 @@ namespace complaint_mangement_system.Controllers
         }
 
         [HttpGet]
-        public IActionResult RejectStaff(int staffid)
+        public IActionResult RejectStaff(
+            int staffid)
         {
-            var request = _context.StaffRequests
-                .FirstOrDefault(r =>
-                    r.userid == staffid &&
-                    r.status == "Pending");
+            var request =
+                _context.StaffRequests.FirstOrDefault(
+                    r =>
+                        r.userid == staffid &&
+                        r.status == "Pending"
+                );
 
             if (request == null)
             {
                 return NotFound();
             }
 
-            var staff = _context.Users
-                .FirstOrDefault(u => u.userid == staffid);
+            var staff =
+                _context.Users.FirstOrDefault(
+                    u => u.userid == staffid
+                );
 
-            var category = _context.Categories
-                .FirstOrDefault(c => c.categoryid == request.categoryid);
+            var category =
+                _context.Categories.FirstOrDefault(
+                    c =>
+                        c.categoryid ==
+                        request.categoryid
+                );
 
-            var model = new StaffRequestViewModel
-            {
-                staffid = staffid,
-                name = staff.name,
-                categoryname = category.categoryname,
-                status = request.status
-            };
+            var model =
+                new StaffRequestViewModel
+                {
+                    staffid = staffid,
+                    name = staff.name,
+                    categoryname =
+                        category.categoryname,
+                    status = request.status
+                };
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult ConfirmRejectStaff(int staffid)
+        public IActionResult ConfirmRejectStaff(
+            int staffid)
         {
-            var request = _context.StaffRequests
-                .FirstOrDefault(r =>
-                    r.userid == staffid &&
-                    r.status == "Pending");
+            var request =
+                _context.StaffRequests.FirstOrDefault(
+                    r =>
+                        r.userid == staffid &&
+                        r.status == "Pending"
+                );
 
             if (request == null)
             {
@@ -456,15 +513,12 @@ namespace complaint_mangement_system.Controllers
         [HttpGet]
         public IActionResult Profile()
         {
-            var userid = HttpContext.Session.GetInt32("userid");
-
-            if (userid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            int userid = GetUserId();
 
             var admin = _context.Users
-                .FirstOrDefault(u => u.userid == userid && u.role == "Admin");
+                .FirstOrDefault(u =>
+                    u.userid == userid &&
+                    u.role == "Admin");
 
             if (admin == null)
             {
@@ -486,15 +540,12 @@ namespace complaint_mangement_system.Controllers
                 return View(admin);
             }
 
-            var userid = HttpContext.Session.GetInt32("userid");
-
-            if (userid == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            int userid = GetUserId();
 
             var existingAdmin = _context.Users
-                .FirstOrDefault(u => u.userid == userid && u.role == "Admin");
+                .FirstOrDefault(u =>
+                    u.userid == userid &&
+                    u.role == "Admin");
 
             if (existingAdmin == null)
             {
@@ -503,12 +554,35 @@ namespace complaint_mangement_system.Controllers
 
             existingAdmin.name = admin.name;
             existingAdmin.email = admin.email;
-            existingAdmin.country_code = admin.country_code;
-            existingAdmin.phone_no = admin.phone_no;
+            existingAdmin.country_code =
+                admin.country_code;
+            existingAdmin.phone_no =
+                admin.phone_no;
 
             _context.SaveChanges();
 
             return RedirectToAction("DashBoard");
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(
+                "Cookies"
+            );
+
+            return RedirectToAction(
+                "Login",
+                "Account"
+            );
+        }
+
+        private int GetUserId()
+        {
+            return int.Parse(
+                User.FindFirstValue(
+                    ClaimTypes.NameIdentifier
+                )
+            );
         }
     }
 }
