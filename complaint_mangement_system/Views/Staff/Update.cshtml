@@ -1,10 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-@model complaint_mangement_system.ViewModels.StaffComplaintViewModel
+﻿@model complaint_mangement_system.ViewModels.StaffComplaintViewModel
 
 @{
     ViewData["Title"] = "Update Complaint";
@@ -19,13 +13,6 @@
             Update complaint status
         </p>
     </div>
-
-    <a asp-controller="Staff"
-       asp-action="Details"
-       asp-route-id="@Model.complaintid"
-       class="btn btn-secondary">
-        Back
-    </a>
 
 </div>
 
@@ -88,19 +75,6 @@
 
         </div>
 
-        <div class="mb-3">
-
-            <label class="form-label fw-bold">
-                Priority
-            </label>
-
-            <input type="text"
-                   class="form-control"
-                   value="@Model.priority"
-                   readonly />
-
-        </div>
-
         <form asp-controller="Staff"
               asp-action="Update"
               method="post">
@@ -112,6 +86,7 @@
 
                 <label asp-for="status"
                        class="form-label fw-bold">
+                    Status
                 </label>
 
                 <select asp-for="status"
@@ -136,7 +111,7 @@
             </button>
 
             <a asp-controller="Staff"
-               asp-action="Complaints"
+               asp-action="Dashboard"
                class="btn btn-secondary">
                 Cancel
             </a>

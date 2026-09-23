@@ -1,10 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-@model List<complaint_mangement_system.ViewModels.StaffComplaintViewModel>
+﻿@model List<complaint_mangement_system.ViewModels.StaffComplaintViewModel>
 
 @{
     ViewData["Title"] = "Staff Dashboard";
@@ -20,9 +14,9 @@
     </div>
 </div>
 
-<div class="row g-4 mb-4">
+<div class="row g-4 mb-3">
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
@@ -39,7 +33,7 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
@@ -56,7 +50,24 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted">In Progress Complaints</h6>
+                        <h2 class="fw-bold">
+                            @ViewBag.InProgressComplaints
+                        </h2>
+                    </div>
+
+                    <i class="bi bi-arrow-repeat fs-1 text-info"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
@@ -104,7 +115,6 @@
                             <th>Complaint ID</th>
                             <th>User</th>
                             <th>Complaint</th>
-                            <th>Priority</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -119,8 +129,6 @@
                                 <td>@complaint.username</td>
 
                                 <td>@complaint.complaintname</td>
-
-                                <td>@complaint.priority</td>
 
                                 <td>
                                     @if (complaint.status == "Pending")

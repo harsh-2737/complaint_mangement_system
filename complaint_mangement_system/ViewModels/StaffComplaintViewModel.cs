@@ -26,10 +26,6 @@ namespace complaint_mangement_system.ViewModels
         [Display(Name = "Description")]
         public string description { get; set; }
 
-        [Required(ErrorMessage = "Priority is required.")]
-        [Range(1, 10, ErrorMessage = "Please enter Priority between 1 to 10.")]
-        [Display(Name = "Priority")]
-        public int priority { get; set; }
 
         [Required(ErrorMessage = "Status is required.")]
         [Display(Name = "Status")]
@@ -38,5 +34,15 @@ namespace complaint_mangement_system.ViewModels
         [Required(ErrorMessage = "Category is required.")]
         [Display(Name = "Category")]
         public string categoryname { get; set; }
+
+
+        [Required(ErrorMessage = "Country Code must selected.")]
+        [Display(Name = "Country Code")]
+        public string country_code { get; set; }
+
+        [Required(ErrorMessage = "Phone Number field must required.")]
+        [Display(Name = "Phone Number")]
+        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Your Phone Number must contain exctly 10 digit.")]
+        public string phone_no { get; set; }
     }
 }

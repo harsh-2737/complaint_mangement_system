@@ -1,0 +1,158 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<complaint_mangement_system.Models.User>
+
+@{
+    ViewData["Title"] = "Category Staffs";
+    Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">
+                @ViewBag.CategoryName Staffs
+            </h2>
+
+            <p class="text-muted mb-0">
+                Staff members assigned to this category.
+            </p>
+        </div>
+
+        <a asp-controller="Admin"
+           asp-action="Staffs"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Categories
+
+        </a>
+
+    </div>
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white py-3">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h5 class="fw-bold mb-0">
+                    @ViewBag.CategoryName Staff Members
+                </h5>
+
+                <span class="badge bg-primary">
+                    @Model.Count Staff
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Country Code</th>
+                                <th>Phone Number</th>
+                                <th>Role</th>
+                                <th>Delete</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+
+                                    <td>
+                                        #@user.userid
+                                    </td>
+
+                                    <td>
+                                        @user.name
+                                    </td>
+
+                                    <td>
+                                        @user.email
+                                    </td>
+
+                                    <td>
+                                        @user.country_code
+                                    </td>
+
+                                    <td>
+                                        @user.phone_no
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-primary">
+                                            @user.role
+                                        </span>
+                                    </td>
+
+                                    <td>
+
+                                        @if (user.role != "Admin")
+                                        {
+                                            <a asp-controller="Admin"
+                                               asp-action="ConfirmDeleteStaff"
+                                               asp-route-id="@user.userid"
+                                               class="btn btn-sm btn-outline-danger">
+
+                                                <i class="bi bi-trash-fill"></i>
+
+                                            </a>
+                                        }
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+
+                    <i class="bi bi-person-x fs-1 text-muted"></i>
+
+                    <h5 class="mt-3">
+                        No Staff Members
+                    </h5>
+
+                    <p class="text-muted">
+                        There are currently no staff members assigned to
+                        @ViewBag.CategoryName.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

@@ -4,7 +4,7 @@
 @{
 }
 
-@model List<complaint_mangement_system.Models.User>
+@model List<complaint_mangement_system.ViewModels.StaffCategoryViewModel>
 
 @{
     ViewData["Title"] = "Manage Staffs";
@@ -14,33 +14,27 @@
 <div class="container-fluid">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-
         <div>
             <h2 class="fw-bold">Manage Staffs</h2>
             <p class="text-muted mb-0">
-                View and manage registered staff members.
+                View and manage staff members according to their categories.
             </p>
         </div>
 
         <a asp-controller="Admin"
            asp-action="CreateStaff"
            class="btn btn-primary">
-
             <i class="bi bi-person-plus-fill me-2"></i>
             Create Staff
-
         </a>
-
     </div>
 
     <div class="card border-0 shadow-sm">
 
         <div class="card-header bg-white py-3">
-
             <h5 class="fw-bold mb-0">
-                All Staffs
+                Staff Categories
             </h5>
-
         </div>
 
         <div class="card-body">
@@ -52,69 +46,55 @@
                     <table class="table table-hover align-middle">
 
                         <thead class="table-light">
-
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Country Code</th>
-                                <th>Phone Number</th>
-                                <th>Role</th>
-                                <th>Delete</th>
+                                <th>Category ID</th>
+                                <th>Category</th>
+                                <th>Total Staff</th>
+                                <th>Staff Details</th>
                             </tr>
-
                         </thead>
 
                         <tbody>
 
-                            @foreach (var user in Model)
+                            @foreach (var category in Model)
                             {
                                 <tr>
 
                                     <td>
-                                        #@user.userid
+                                        #@category.categoryid
                                     </td>
 
                                     <td>
-                                        @user.name
-                                    </td>
-
-                                    <td>
-                                        @user.email
-                                    </td>
-
-                                    <td>
-                                        @user.country_code
-                                    </td>
-
-                                    <td>
-                                        @user.phone_no
-                                    </td>
-
-                                    <td>
-                                        <span class="badge bg-primary">
-                                            @user.role
+                                        <span class="fw-semibold">
+                                            @category.categoryname
                                         </span>
                                     </td>
 
                                     <td>
-
-                                        
-                                        @if (user.role != "Admin")
-                                        {
-                                            <a asp-controller="Admin"
-                                               asp-action="ConfirmDeleteStaff"
-                                               asp-route-id="@user.userid"
-                                               class="btn btn-sm btn-outline-danger">
-
-                                                <i class="bi bi-trash-fill"></i>
-
-                                            </a>
-                                        }
-
-                                        
+                                        <span class="badge bg-primary">
+                                            @category.staffs.Count
+                                        </span>
                                     </td>
 
+                                    <td>
+                                        @if (category.staffs.Any())
+                                        {
+                                            <a asp-controller="Admin"
+                                               asp-action="CategoryStaffs"
+                                               asp-route-categoryid="@category.categoryid"
+                                               class="btn btn-sm btn-outline-primary">
+
+                                                <i class="bi bi-people-fill me-1"></i>
+                                                View Staff
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                No Staff
+                                            </span>
+                                        }
+                                    </td>
 
                                 </tr>
                             }
@@ -129,14 +109,14 @@
             {
                 <div class="text-center py-5">
 
-                    <i class="bi bi-people fs-1 text-muted"></i>
+                    <i class="bi bi-tags fs-1 text-muted"></i>
 
                     <h5 class="mt-3">
-                        No staff members found
+                        No categories found
                     </h5>
 
                     <p class="text-muted">
-                        There are currently no registered staff members.
+                        Create a category first to manage staff.
                     </p>
 
                 </div>

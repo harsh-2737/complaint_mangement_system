@@ -22,11 +22,6 @@ namespace complaint_mangement_system.ViewModels
         [Display(Name = "Description")]
         public string description { get; set; }
 
-        [Required(ErrorMessage = "Priority is required.")]
-        [Range(1, 10, ErrorMessage = "Please enter Priority between 1 to 10.")]
-        [Display(Name = "Priority")]
-        public int priority { get; set; }
-
         [Required(ErrorMessage = "Status is required.")]
         [Display(Name = "Status")]
         public string status { get; set; }

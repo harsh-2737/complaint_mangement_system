@@ -64,7 +64,6 @@ namespace complaint_mangement_system.Controllers
                         userid = complaint.userid,
                         complaintname = complaint.complaintname,
                         description = complaint.description,
-                        priority = complaint.priority,
                         status = complaint.status
                     }
                 );
@@ -120,7 +119,6 @@ namespace complaint_mangement_system.Controllers
                 userid = userid,
                 complaintname = c1.complaintname,
                 description = c1.description,
-                priority = c1.priority,
                 status = "Pending"
             };
 
@@ -209,7 +207,6 @@ namespace complaint_mangement_system.Controllers
                         userid = complaint.userid,
                         complaintname = complaint.complaintname,
                         description = complaint.description,
-                        priority = complaint.priority,
                         status = complaint.status
                     };
 
@@ -247,7 +244,6 @@ namespace complaint_mangement_system.Controllers
                     userid = complaint.userid,
                     complaintname = complaint.complaintname,
                     description = complaint.description,
-                    priority = complaint.priority,
                     status = complaint.status
                 };
 
@@ -302,7 +298,6 @@ namespace complaint_mangement_system.Controllers
             complaint.categoryid = c1.categoryid;
             complaint.complaintname = c1.complaintname;
             complaint.description = c1.description;
-            complaint.priority = c1.priority;
 
             _context.SaveChanges();
 

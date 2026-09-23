@@ -30,6 +30,8 @@ namespace complaint_mangement_system.Models
         [RegularExpression(@"^[0-9]{10}$", ErrorMessage ="Your Phone Number must contain exctly 10 digit.")]
         public string phone_no { get; set; }
 
+        [Required(ErrorMessage = "Role must be selected.")]
+        [Display(Name = "Role")]
         public string role { get; set; }
 
         //adress

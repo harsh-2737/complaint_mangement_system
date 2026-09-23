@@ -1,10 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-@model complaint_mangement_system.ViewModels.StaffComplaintViewModel
+﻿@model complaint_mangement_system.ViewModels.StaffComplaintViewModel
 
 @{
     ViewData["Title"] = "Complaint Details";
@@ -26,11 +20,10 @@
            class="btn btn-secondary">
             Back
         </a>
-
-        <a asp-controller="Staff"
-           asp-action="Update"
-           asp-route-id="@Model.complaintid"
-           class="btn btn-warning">
+         <a asp-controller="Staff"
+            asp-action="Update"
+            asp-route-id="@Model.complaintid"
+             class="btn btn-warning btn-sm">
             Update Status
         </a>
     </div>
@@ -41,123 +34,77 @@
 
     <div class="card-body">
 
-        <div class="row g-4">
+        <div class="mb-4">
 
-            <div class="col-md-6">
+            <label class="form-label fw-bold">
+                User Name
+            </label>
 
-                <label class="form-label fw-bold">
-                    Complaint ID
-                </label>
+            <input type="text"
+                   class="form-control"
+                   value="@Model.username"
+                   readonly />
+
+        </div>
+
+        <div class="mb-4">
+
+            <label class="form-label fw-bold">
+                User Phone Number
+            </label>
+
+            <div class="input-group">
 
                 <input type="text"
                        class="form-control"
-                       value="@Model.complaintid"
+                       style="max-width: 100px;"
+                       value="@Model.country_code"
+                       readonly />
+
+                <input type="text"
+                       class="form-control"
+                       value="@Model.phone_no"
                        readonly />
 
             </div>
 
-            <div class="col-md-6">
+        </div>
 
-                <label class="form-label fw-bold">
-                    User ID
-                </label>
+        <div class="mb-4">
 
-                <input type="text"
-                       class="form-control"
-                       value="@Model.userid"
-                       readonly />
+            <label class="form-label fw-bold">
+                Category
+            </label>
 
-            </div>
+            <input type="text"
+                   class="form-control"
+                   value="@Model.categoryname"
+                   readonly />
 
-            <div class="col-md-6">
+        </div>
 
-                <label class="form-label fw-bold">
-                    User Name
-                </label>
+        <div class="mb-4">
 
-                <input type="text"
-                       class="form-control"
-                       value="@Model.username"
-                       readonly />
+            <label class="form-label fw-bold">
+                Complaint Title
+            </label>
 
-            </div>
+            <input type="text"
+                   class="form-control"
+                   value="@Model.complaintname"
+                   readonly />
 
-            <div class="col-md-6">
+        </div>
 
-                <label class="form-label fw-bold">
-                    Category
-                </label>
+        <div class="mb-2">
 
-                <input type="text"
-                       class="form-control"
-                       value="@Model.categoryname"
-                       readonly />
+            <label class="form-label fw-bold">
+                Complaint Description
+            </label>
 
-            </div>
-
-            <div class="col-md-12">
-
-                <label class="form-label fw-bold">
-                    Complaint Title
-                </label>
-
-                <input type="text"
-                       class="form-control"
-                       value="@Model.complaintname"
-                       readonly />
-
-            </div>
-
-            <div class="col-md-12">
-
-                <label class="form-label fw-bold">
-                    Description
-                </label>
-
-                <textarea class="form-control"
-                          rows="5"
-                          readonly>@Model.description</textarea>
-
-            </div>
-
-            <div class="col-md-4">
-
-                <label class="form-label fw-bold">
-                    Priority
-                </label>
-
-                <input type="text"
-                       class="form-control"
-                       value="@Model.priority"
-                       readonly />
-
-            </div>
-
-            <div class="col-md-4">
-
-                <label class="form-label fw-bold">
-                    Status
-                </label>
-
-                <input type="text"
-                       class="form-control"
-                       value="@Model.status"
-                       readonly />
-
-            </div>
-
-            <div class="col-md-4">
-
-                <label class="form-label fw-bold">
-                    Category ID
-                </label>
-
-                <input type="text"
-                       class="form-control"
-                       value="@Model.categoryid"
-                       readonly />
-
-            </div>
+            <textarea class="form-control"
+                      rows="6"
+                      readonly>@Model.description</textarea>
 
         </div>
 

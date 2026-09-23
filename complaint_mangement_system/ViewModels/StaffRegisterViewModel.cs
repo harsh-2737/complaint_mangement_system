@@ -27,6 +27,11 @@ namespace complaint_mangement_system.ViewModels
         [DataType(DataType.Password)]
         public string password { get; set; }
 
+        [Required(ErrorMessage = "Confrim your password.")]
+        [Compare("password", ErrorMessage = "password and confirm password must match.")]
+        [Display(Name = "Confirm Password")]
+        public string confirm_password { get; set; }
+
         [Required(ErrorMessage = "Country Code must selected.")]
         [Display(Name = "Country Code")]
         public string country_code { get; set; }

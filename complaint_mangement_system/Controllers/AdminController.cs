@@ -23,9 +23,33 @@ namespace complaint_mangement_system.Controllers
             return RedirectToAction("DashBoard");
         }
 
-        public IActionResult DashBoard()
+        [HttpGet]
+        public IActionResult Dashboard()
         {
-            return View();
+            int userid = GetUserId();
+
+            var complaints = _context.Complaints
+                .Where(c => c.userid == userid)
+                .ToList();
+
+            var model = complaints.Select(c =>
+            {
+                var category = _context.Categories
+                    .FirstOrDefault(cat => cat.categoryid == c.categoryid);
+
+                return new AdminComplaintViewModel
+                {
+                    complaintid = c.complaintid,
+                    categoryid = c.categoryid,
+                    categoryname = category?.categoryname,
+                    userid = c.userid,
+                    complaintname = c.complaintname,
+                    description = c.description,
+                    status = c.status
+                };
+            }).ToList();
+
+            return View(model);
         }
 
         public IActionResult Users()
@@ -113,14 +137,6 @@ namespace complaint_mangement_system.Controllers
             return RedirectToAction("Users");
         }
 
-        public IActionResult Staffs()
-        {
-            var staffs = _context.Users
-                .Where(u => u.role == "Staff")
-                .ToList();
-
-            return View(staffs);
-        }
 
         [HttpGet]
         public IActionResult CreateStaff()
@@ -562,6 +578,62 @@ namespace complaint_mangement_system.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("DashBoard");
+        }
+
+        public IActionResult Staffs()
+        {
+            var categories = _context.Categories.ToList();
+
+            var staffRequests = _context.StaffRequests
+                .Where(r => r.status == "Approved")
+                .ToList();
+
+            var staffUsers = _context.Users
+                .Where(u => u.role == "Staff")
+                .ToList();
+
+            var model = categories.Select(category => new StaffCategoryViewModel
+            {
+                categoryid = category.categoryid,
+                categoryname = category.categoryname,
+                staffs = staffRequests
+                    .Where(r => r.categoryid == category.categoryid)
+                    .Select(r => staffUsers.FirstOrDefault(u => u.userid == r.userid))
+                    .Where(u => u != null)
+                    .ToList()
+            }).ToList();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult CategoryStaffs(int categoryid)
+        {
+            var category = _context.Categories
+                .FirstOrDefault(c => c.categoryid == categoryid);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            var staffIds = _context.StaffRequests
+                .Where(r =>
+                    r.categoryid == categoryid &&
+                    r.status == "Approved")
+                .Select(r => r.userid)
+                .ToList();
+
+            var staffs = _context.Users
+                .Where(u =>
+                    staffIds.Contains(u.userid) &&
+                    u.role == "Staff")
+                .ToList();
+
+            ViewBag.CategoryName = category.categoryname;
+            ViewBag.CategoryId = category.categoryid;
+
+            return View(staffs);
         }
 
         public async Task<IActionResult> Logout()

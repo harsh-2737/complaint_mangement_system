@@ -43,6 +43,9 @@ namespace complaint_mangement_system.Controllers
             ViewBag.PendingComplaints =
                 complaints.Count(c => c.status == "Pending");
 
+            ViewBag.InProgressComplaints =
+                complaints.Count(c => c.status == "In Progress");
+
             ViewBag.ResolvedComplaints =
                 complaints.Count(c => c.status == "Resolved");
 
@@ -69,7 +72,7 @@ namespace complaint_mangement_system.Controllers
                         username = user?.name,
                         complaintname = complaint.complaintname,
                         description = complaint.description,
-                        priority = complaint.priority,
+
                         status = complaint.status
                     }
                 );
@@ -161,7 +164,6 @@ namespace complaint_mangement_system.Controllers
                         username = user?.name,
                         complaintname = complaint.complaintname,
                         description = complaint.description,
-                        priority = complaint.priority,
                         status = complaint.status
                     };
 
@@ -198,14 +200,12 @@ namespace complaint_mangement_system.Controllers
                 new StaffComplaintViewModel
                 {
                     complaintid = complaint.complaintid,
-                    categoryid = complaint.categoryid,
                     categoryname = category?.categoryname,
-                    userid = complaint.userid,
                     username = user?.name,
+                    country_code = user?.country_code,
+                    phone_no = user?.phone_no,
                     complaintname = complaint.complaintname,
-                    description = complaint.description,
-                    priority = complaint.priority,
-                    status = complaint.status
+                    description = complaint.description
                 };
 
             return View(viewModel);
@@ -244,7 +244,6 @@ namespace complaint_mangement_system.Controllers
                     username = user?.name,
                     complaintname = complaint.complaintname,
                     description = complaint.description,
-                    priority = complaint.priority,
                     status = complaint.status
                 };
 
@@ -253,8 +252,7 @@ namespace complaint_mangement_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(
-            StaffComplaintViewModel c1)
+        public IActionResult Update(StaffComplaintViewModel c1)
         {
             int categoryid = GetCategoryId();
 
@@ -268,8 +266,14 @@ namespace complaint_mangement_system.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("categoryid");
+            ModelState.Remove("userid");
             ModelState.Remove("username");
+            ModelState.Remove("country_code");
+            ModelState.Remove("phone_no");
             ModelState.Remove("categoryname");
+            ModelState.Remove("complaintname");
+            ModelState.Remove("description");
 
             if (!ModelState.IsValid)
             {
@@ -281,6 +285,37 @@ namespace complaint_mangement_system.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Dashboard");
+        }
+
+        [HttpGet]
+        public IActionResult StaffMembers()
+        {
+            int categoryid = GetCategoryId();
+            int currentStaffId = GetUserId();
+
+            var staffIds = _context.StaffRequests
+                .Where(r =>
+                    r.categoryid == categoryid &&
+                    r.status == "Approved" &&
+                    r.userid != currentStaffId)
+                .Select(r => r.userid)
+                .ToList();
+
+            var staffMembers = _context.Users
+                .Where(u =>
+                    staffIds.Contains(u.userid) &&
+                    u.role == "Staff")
+                .Select(u => new StaffMemberViewModel
+                {
+                    userid = u.userid,
+                    name = u.name,
+                    email = u.email,
+                    country_code = u.country_code,
+                    phone_no = u.phone_no
+                })
+                .ToList();
+
+            return View(staffMembers);
         }
 
         public async Task<IActionResult> Logout()

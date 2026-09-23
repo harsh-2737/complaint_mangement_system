@@ -1,111 +1,247 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-@model complaint_mangement_system.ViewModels.StaffRegisterViewModel
+﻿@model complaint_mangement_system.ViewModels.StaffRegisterViewModel
 
 @{
     ViewData["Title"] = "Staff Registration";
 }
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
 
-            <div class="card shadow">
-                <div class="card-header">
-                    <h3 class="text-center">Staff Registration</h3>
+        <div class="card border-0 shadow-lg rounded-4">
+
+            <div class="card-body p-4 p-md-5">
+
+                <div class="text-center mb-4">
+
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center"
+                         style="width:70px;height:70px;">
+
+                        <i class="bi bi-person-badge-fill fs-2"></i>
+
+                    </div>
+
+                    <h2 class="fw-bold mt-3 mb-1">
+                        Staff Registration
+                    </h2>
+
+                    <p class="text-muted">
+                        Register as a staff member
+                    </p>
+
                 </div>
 
-                <div class="card-body">
+                <form asp-controller="Account"
+                      asp-action="RegisterAsStaff"
+                      method="post">
 
-                    <form asp-action="RegisterAsStaff" method="post">
+                    <div asp-validation-summary="All"
+                         class="text-danger mb-3">
+                    </div>
 
-                        <div asp-validation-summary="All"
-                             class="text-danger">
-                        </div>
+                    <div class="mb-3">
 
-                        <div class="mb-3">
-                            <label asp-for="name"
-                                   class="form-label">
-                            </label>
+                        <label asp-for="name"
+                               class="form-label fw-semibold">
+                            Full Name
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-person text-primary"></i>
+                            </span>
 
                             <input asp-for="name"
-                                   class="form-control" />
+                                   class="form-control"
+                                   placeholder="Enter your full name" />
 
-                            <span asp-validation-for="name"
-                                  class="text-danger">
-                            </span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="email"
-                                   class="form-label">
-                            </label>
+                        <span asp-validation-for="name"
+                              class="text-danger small">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="email"
+                               class="form-label fw-semibold">
+                            Email Address
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-envelope text-primary"></i>
+                            </span>
 
                             <input asp-for="email"
-                                   class="form-control" />
+                                   class="form-control"
+                                   placeholder="Enter your email" />
 
-                            <span asp-validation-for="email"
-                                  class="text-danger">
-                            </span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="password"
-                                   class="form-label">
-                            </label>
+                        <span asp-validation-for="email"
+                              class="text-danger small">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="password"
+                               class="form-label fw-semibold">
+                            Password
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-lock text-primary"></i>
+                            </span>
 
                             <input asp-for="password"
-                                   class="form-control" />
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Create a password" />
 
-                            <span asp-validation-for="password"
-                                  class="text-danger">
-                            </span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="country_code"
-                                   class="form-label">
-                            </label>
+                        <span asp-validation-for="password"
+                              class="text-danger small">
+                        </span>
 
-                            <select asp-for="country_code" class="form-select">
-                                <option value="">Select country code</option>
-                                <option value="+91">India (+91)</option>
-                                <option value="+1">USA/Canada (+1)</option>
-                                <option value="+44">United Kingdom (+44)</option>
-                                <option value="+61">Australia (+61)</option>
-                                <option value="+81">Japan (+81)</option>
-                                <option value="+86">China (+86)</option>
-                                <option value="+971">UAE (+971)</option>
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="confirm_password"
+                               class="form-label fw-semibold">
+                            Confirm Password
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-shield-lock text-primary"></i>
+                            </span>
+
+                            <input asp-for="confirm_password"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Confirm your password" />
+
+                        </div>
+
+                        <span asp-validation-for="confirm_password"
+                              class="text-danger small">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="country_code"
+                               class="form-label fw-semibold">
+                            Country Code
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-globe2 text-primary"></i>
+                            </span>
+
+                            <select asp-for="country_code"
+                                    class="form-select">
+
+                                <option value="">
+                                    Select country code
+                                </option>
+
+                                <option value="+91">
+                                    India (+91)
+                                </option>
+
+                                <option value="+1">
+                                    USA/Canada (+1)
+                                </option>
+
+                                <option value="+44">
+                                    United Kingdom (+44)
+                                </option>
+
+                                <option value="+61">
+                                    Australia (+61)
+                                </option>
+
+                                <option value="+81">
+                                    Japan (+81)
+                                </option>
+
+                                <option value="+86">
+                                    China (+86)
+                                </option>
+
+                                <option value="+971">
+                                    UAE (+971)
+                                </option>
+
                             </select>
 
-                            <span asp-validation-for="country_code"
-                                  class="text-danger">
-                            </span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="phone_no"
-                                   class="form-label">
-                            </label>
+                        <span asp-validation-for="country_code"
+                              class="text-danger small">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label asp-for="phone_no"
+                               class="form-label fw-semibold">
+                            Phone Number
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-telephone text-primary"></i>
+                            </span>
 
                             <input asp-for="phone_no"
-                                   class="form-control" />
+                                   class="form-control"
+                                   placeholder="Enter 10 digit phone number" />
 
-                            <span asp-validation-for="phone_no"
-                                  class="text-danger">
-                            </span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="categoryid" class="form-label"></label>
+                        <span asp-validation-for="phone_no"
+                              class="text-danger small">
+                        </span>
 
-                            <select asp-for="categoryid" class="form-select">
+                    </div>
 
-                                <option value="">Select Category</option>
+                    <div class="mb-4">
+
+                        <label asp-for="categoryid"
+                               class="form-label fw-semibold">
+                            Category
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-grid text-primary"></i>
+                            </span>
+
+                            <select asp-for="categoryid"
+                                    class="form-select">
+
+                                <option value="">
+                                    Select Category
+                                </option>
 
                                 @foreach (var category in ViewBag.Categories)
                                 {
@@ -116,28 +252,54 @@
 
                             </select>
 
-                            <span asp-validation-for="categoryid"
-                                  class="text-danger"></span>
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit"
-                                    class="btn btn-primary">
-                                Register as Staff
-                            </button>
-                        </div>
+                        <span asp-validation-for="categoryid"
+                              class="text-danger small">
+                        </span>
 
-                    </form>
+                    </div>
+
+                    <div class="d-grid">
+
+                        <button type="submit"
+                                class="btn btn-primary btn-lg rounded-3">
+
+                            <i class="bi bi-person-badge me-2"></i>
+
+                            Register as Staff
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <hr class="my-4">
+
+                <div class="text-center">
+
+                    <p class="text-muted mb-2">
+                        Already have an account?
+                    </p>
+
+                    <a asp-controller="Account"
+                       asp-action="Login"
+                       class="btn btn-outline-primary rounded-3 px-4">
+
+                        Login
+
+                    </a>
 
                 </div>
+
             </div>
 
         </div>
+
     </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }
