@@ -69,18 +69,9 @@ namespace complaint_mangement_system.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime?>("resolvedat")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("staffid")
-                        .HasColumnType("int");
-
                     b.Property<string>("status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("updatedat")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("userid")
                         .HasColumnType("int");

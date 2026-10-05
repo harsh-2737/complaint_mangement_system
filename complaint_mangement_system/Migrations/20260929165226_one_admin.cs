@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace complaint_mangement_system.Migrations
 {
     /// <inheritdoc />
-    public partial class only_one_admin : Migration
+    public partial class one_admin : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,21 +26,6 @@ namespace complaint_mangement_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
-                columns: table => new
-                {
-                    commentid = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    userid = table.Column<int>(type: "int", nullable: false),
-                    complaintid = table.Column<int>(type: "int", nullable: false),
-                    comment = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comments", x => x.commentid);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Complaints",
                 columns: table => new
                 {
@@ -48,14 +33,10 @@ namespace complaint_mangement_system.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     categoryid = table.Column<int>(type: "int", nullable: false),
                     userid = table.Column<int>(type: "int", nullable: false),
-                    staffid = table.Column<int>(type: "int", nullable: true),
                     complaintname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    priority = table.Column<int>(type: "int", nullable: false),
                     status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    createdat = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    updatedat = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    resolvedat = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    createdat = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,6 +57,21 @@ namespace complaint_mangement_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Feedbacks", x => x.feedbackid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StaffRequests",
+                columns: table => new
+                {
+                    requestid = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userid = table.Column<int>(type: "int", nullable: false),
+                    categoryid = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StaffRequests", x => x.requestid);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,13 +105,13 @@ namespace complaint_mangement_system.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Comments");
-
-            migrationBuilder.DropTable(
                 name: "Complaints");
 
             migrationBuilder.DropTable(
                 name: "Feedbacks");
+
+            migrationBuilder.DropTable(
+                name: "StaffRequests");
 
             migrationBuilder.DropTable(
                 name: "Users");

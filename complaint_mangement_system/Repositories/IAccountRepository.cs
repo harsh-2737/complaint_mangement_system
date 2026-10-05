@@ -17,5 +17,7 @@ namespace complaint_mangement_system.Repositories
         StaffRequest CreateStaffRequest(int userid, int categoryid);
 
         StaffRequest? GetStaffRequest(int userid);
+
+        void ApproveStaffRequest(int userid);
     }
 }

@@ -92,5 +92,20 @@ namespace complaint_mangement_system.Repositories
             return _context.StaffRequests
                 .FirstOrDefault(r => r.userid == userid);
         }
+
+        public void ApproveStaffRequest(int userid)
+        {
+            var request = _context.StaffRequests
+                .FirstOrDefault(r => r.userid == userid);
+
+            if (request == null)
+            {
+                return;
+            }
+
+            request.status = "Approved";
+
+            _context.SaveChanges();
+        }
     }
 }

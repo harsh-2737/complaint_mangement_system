@@ -7,7 +7,7 @@
 
 @{
     ViewData["Title"] = "Manage Users";
-    Layout = "~/Views/Admin/_Layout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container-fluid">
@@ -71,7 +71,7 @@
                                 <tr>
 
                                     <td>
-                                        #@user.userid
+                                        @user.userid
                                     </td>
 
                                     <td>
@@ -104,13 +104,11 @@
                                             <a asp-controller="Admin"
                                                asp-action="ConfirmDeleteUser"
                                                asp-route-id="@user.userid"
-                                               class="btn btn-sm btn-outline-danger">
-
-                                                <i class="bi bi-trash-fill"></i>
-
+                                               class="btn btn-danger">
+                                               Delete
                                             </a>
                                         }
-                                        
+                                       
 
                                     </td>
 

@@ -64,7 +64,8 @@ namespace complaint_mangement_system.Controllers
                         userid = complaint.userid,
                         complaintname = complaint.complaintname,
                         description = complaint.description,
-                        status = complaint.status
+                        status = complaint.status,
+                        createdAt = DateTime.Now
                     }
                 );
             }

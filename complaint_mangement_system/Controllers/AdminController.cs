@@ -1,10 +1,11 @@
-﻿using System.Security.Claims;
-using complaint_mangement_system.Data;
+﻿using complaint_mangement_system.Data;
 using complaint_mangement_system.Models;
+using complaint_mangement_system.Repositories;
 using complaint_mangement_system.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace complaint_mangement_system.Controllers
 {
@@ -12,10 +13,12 @@ namespace complaint_mangement_system.Controllers
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAccountRepository _accountRepository;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context, IAccountRepository accountRepository)
         {
             _context = context;
+            _accountRepository = accountRepository;
         }
 
         public IActionResult Index()
@@ -26,28 +29,48 @@ namespace complaint_mangement_system.Controllers
         [HttpGet]
         public IActionResult Dashboard()
         {
-            int userid = GetUserId();
-
             var complaints = _context.Complaints
-                .Where(c => c.userid == userid)
+                .OrderByDescending(c => c.createdat)
                 .ToList();
 
-            var model = complaints.Select(c =>
-            {
-                var category = _context.Categories
-                    .FirstOrDefault(cat => cat.categoryid == c.categoryid);
+            ViewBag.UserName = User.Identity?.Name;
 
-                return new AdminComplaintViewModel
+            ViewBag.TotalComplaints = complaints.Count;
+
+            ViewBag.PendingComplaints =
+                complaints.Count(c => c.status == "Pending");
+
+            ViewBag.InProgressComplaints =
+                complaints.Count(c => c.status == "In Progress");
+
+            ViewBag.ResolvedComplaints =
+                complaints.Count(c => c.status == "Resolved");
+
+            var model = complaints
+                .Take(5)
+                .Select(c =>
                 {
-                    complaintid = c.complaintid,
-                    categoryid = c.categoryid,
-                    categoryname = category?.categoryname,
-                    userid = c.userid,
-                    complaintname = c.complaintname,
-                    description = c.description,
-                    status = c.status
-                };
-            }).ToList();
+                    var category = _context.Categories
+                        .FirstOrDefault(cat =>
+                            cat.categoryid == c.categoryid);
+
+                    var user = _context.Users
+                        .FirstOrDefault(u =>
+                            u.userid == c.userid);
+
+                    return new AdminComplaintViewModel
+                    {
+                        complaintid = c.complaintid,
+                        categoryid = c.categoryid,
+                        categoryname = category?.categoryname,
+                        userid = c.userid,
+                        username = user?.name,
+                        complaintname = c.complaintname,
+                        description = c.description,
+                        status = c.status
+                    };
+                })
+                .ToList();
 
             return View(model);
         }
@@ -141,39 +164,57 @@ namespace complaint_mangement_system.Controllers
         [HttpGet]
         public IActionResult CreateStaff()
         {
+            ViewBag.Categories =
+                _accountRepository.GetCategories();
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateStaff(User staff)
+        public async Task<IActionResult> CreateStaff(StaffRegisterViewModel r1)
         {
-            staff.role = "Staff";
+            r1.role = "Staff";
+            r1.status = StaffStatus.Approved;
 
             ModelState.Remove("role");
+            ModelState.Remove("status");
 
             if (!ModelState.IsValid)
             {
-                return View(staff);
+                ViewBag.Categories =
+                    _accountRepository.GetCategories();
+
+                return View(r1);
             }
 
-            var existingStaff =
-                _context.Users.FirstOrDefault(
-                    u => u.email == staff.email
-                );
+            var existingUser =
+                _accountRepository.GetUserByEmail(r1.email);
 
-            if (existingStaff != null)
+            if (existingUser != null)
             {
                 ModelState.AddModelError(
                     "email",
                     "Email already exists."
                 );
 
-                return View(staff);
+                ViewBag.Categories =
+                    _accountRepository.GetCategories();
+
+                return View(r1);
             }
 
-            _context.Users.Add(staff);
-            _context.SaveChanges();
+            var user =
+                _accountRepository.RegisterAsStaff(r1);
+
+            _accountRepository.CreateStaffRequest(
+                user.userid,
+                r1.categoryid
+            );
+
+            _accountRepository.ApproveStaffRequest(
+                user.userid
+            );
 
             return RedirectToAction("Staffs");
         }
@@ -348,17 +389,31 @@ namespace complaint_mangement_system.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteCategory(int id)
         {
-            var category =
-                _context.Categories.FirstOrDefault(
-                    c => c.categoryid == id
-                );
+            var staffRequests = _context.StaffRequests
+                .Where(r => r.categoryid == id)
+                .ToList();
 
-            if (category == null)
+            foreach (var request in staffRequests)
             {
-                return NotFound();
+                var user = _context.Users
+                    .FirstOrDefault(u => u.userid == request.userid);
+
+                if (user != null && user.role == "Staff")
+                {
+                    _context.Users.Remove(user);
+                }
+
+                _context.StaffRequests.Remove(request);
             }
 
-            _context.Categories.Remove(category);
+            var category = _context.Categories
+                .FirstOrDefault(c => c.categoryid == id);
+
+            if (category != null)
+            {
+                _context.Categories.Remove(category);
+            }
+
             _context.SaveChanges();
 
             return RedirectToAction("Categories");

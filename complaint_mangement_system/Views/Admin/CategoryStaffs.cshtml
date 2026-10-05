@@ -8,7 +8,7 @@
 
 @{
     ViewData["Title"] = "Category Staffs";
-    Layout = "~/Views/Admin/_Layout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container-fluid">
@@ -25,12 +25,16 @@
             </p>
         </div>
 
+    </div>
+
+    <div class="mb-4">
+
         <a asp-controller="Admin"
            asp-action="Staffs"
            class="btn btn-outline-secondary">
 
             <i class="bi bi-arrow-left me-2"></i>
-            Back to Categories
+            Back to Staffs
 
         </a>
 
@@ -83,7 +87,7 @@
                                 <tr>
 
                                     <td>
-                                        #@user.userid
+                                        @user.userid
                                     </td>
 
                                     <td>
@@ -115,10 +119,8 @@
                                             <a asp-controller="Admin"
                                                asp-action="ConfirmDeleteStaff"
                                                asp-route-id="@user.userid"
-                                               class="btn btn-sm btn-outline-danger">
-
-                                                <i class="bi bi-trash-fill"></i>
-
+                                               class="btn btn-danger">
+                                               Delete
                                             </a>
                                         }
 

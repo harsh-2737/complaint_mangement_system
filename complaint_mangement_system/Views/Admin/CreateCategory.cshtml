@@ -5,7 +5,7 @@
 }
 @{
     ViewData["Title"] = "Create Category";
-    Layout = "~/Views/Admin/_Layout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 @model complaint_mangement_system.Models.Category
@@ -35,12 +35,14 @@
               class="text-danger"></span>
     </div>
 
+    <a asp-action="Categories" class="btn btn-secondary">
+        Back
+    </a>
+
     <button type="submit" class="btn btn-primary">
         Create
     </button>
 
-    <a asp-action="Categories" class="btn btn-secondary">
-        Back
-    </a>
+    
 
 </form>

@@ -34,9 +34,5 @@ namespace complaint_mangement_system.Models
         [Display(Name = "Role")]
         public string role { get; set; }
 
-        //adress
-
-
-
     }
 }

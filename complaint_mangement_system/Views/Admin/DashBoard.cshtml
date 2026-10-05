@@ -1,15 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-
-@model List<complaint_mangement_system.ViewModels.AdminComplaintViewModel>
+﻿@model List<complaint_mangement_system.ViewModels.AdminComplaintViewModel>
 
 @{
     ViewData["Title"] = "Admin Dashboard";
-    Layout = "~/Views/Admin/_Layout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container-fluid">
@@ -32,7 +25,7 @@
                asp-action="Staffs"
                class="btn btn-primary">
 
-                <i class="bi bi-person-badge-fill  me-1"></i>
+                <i class="bi bi-person-badge-fill me-1"></i>
                 Manage Staff
 
             </a>
@@ -59,12 +52,7 @@
 
     </div>
 
-
-    <!-- Dashboard Cards -->
-
     <div class="row g-4 mb-4">
-
-        <!-- Total Complaints -->
 
         <div class="col-md-3">
 
@@ -96,9 +84,6 @@
 
         </div>
 
-
-        <!-- Pending -->
-
         <div class="col-md-3">
 
             <div class="card border-0 shadow-sm">
@@ -129,9 +114,6 @@
 
         </div>
 
-
-        <!-- In Progress -->
-
         <div class="col-md-3">
 
             <div class="card border-0 shadow-sm">
@@ -161,9 +143,6 @@
             </div>
 
         </div>
-
-
-        <!-- Resolved -->
 
         <div class="col-md-3">
 
@@ -197,9 +176,6 @@
 
     </div>
 
-
-    <!-- All Complaints -->
-
     <div class="card border-0 shadow-sm">
 
         <div class="card-header bg-white py-3">
@@ -207,27 +183,17 @@
             <div class="d-flex justify-content-between align-items-center">
 
                 <h5 class="fw-bold mb-0">
-                    All Complaints
+                    Recent Complaints
                 </h5>
-
-                <a asp-controller="Admin"
-                   asp-action="Complaints"
-                   class="btn btn-sm btn-outline-primary">
-
-                    View All
-
-                </a>
 
             </div>
 
         </div>
 
-
         <div class="card-body">
 
-            @if (Model != null && Model.Count > 0)
+            @if (Model != null && Model.Any())
             {
-
                 <div class="table-responsive">
 
                     <table class="table table-hover align-middle">
@@ -238,36 +204,35 @@
 
                                 <th>ID</th>
 
+                                <th>User</th>
+
                                 <th>Complaint</th>
 
                                 <th>Category</th>
 
-
                                 <th>Status</th>
-
-                                <th>Action</th>
 
                             </tr>
 
                         </thead>
 
-
                         <tbody>
 
                             @foreach (var complaint in Model)
                             {
-
                                 <tr>
 
                                     <td>
-                                        #@complaint.complaintid
+                                        @complaint.complaintid
                                     </td>
 
+                                    <td>
+                                        @complaint.username
+                                    </td>
 
                                     <td>
                                         @complaint.complaintname
                                     </td>
-
 
                                     <td>
                                         @complaint.categoryname
@@ -277,86 +242,43 @@
 
                                         @if (complaint.status == "Pending")
                                         {
-
                                             <span class="badge bg-warning text-dark">
                                                 Pending
                                             </span>
-
                                         }
                                         else if (complaint.status == "Assigned")
                                         {
-
                                             <span class="badge bg-primary">
                                                 Assigned
                                             </span>
-
                                         }
                                         else if (complaint.status == "In Progress")
                                         {
-
                                             <span class="badge bg-info text-dark">
                                                 In Progress
                                             </span>
-
                                         }
                                         else if (complaint.status == "Resolved")
                                         {
-
                                             <span class="badge bg-success">
                                                 Resolved
                                             </span>
-
                                         }
                                         else if (complaint.status == "Closed")
                                         {
-
                                             <span class="badge bg-dark">
                                                 Closed
                                             </span>
-
                                         }
                                         else
                                         {
-
                                             <span class="badge bg-secondary">
                                                 @complaint.status
                                             </span>
-
                                         }
 
                                     </td>
-
-
-                                    <td>
-
-                                        <a asp-controller="Admin"
-                                           asp-action="Details"
-                                           asp-route-id="@complaint.complaintid"
-                                           class="btn btn-sm btn-outline-primary">
-
-                                            <i class="bi bi-eye"></i>
-
-                                        </a>
-
-
-                                        @if (complaint.status == "Pending")
-                                        {
-
-                                            <a asp-controller="Admin"
-                                               asp-action="Assign"
-                                               asp-route-id="@complaint.complaintid"
-                                               class="btn btn-sm btn-outline-success">
-
-                                                <i class="bi bi-person-plus"></i>
-
-                                            </a>
-
-                                        }
-
-                                    </td>
-
                                 </tr>
-
                             }
 
                         </tbody>
@@ -364,11 +286,9 @@
                     </table>
 
                 </div>
-
             }
             else
             {
-
                 <div class="text-center py-5">
 
                     <i class="bi bi-inbox fs-1 text-muted"></i>
@@ -382,7 +302,6 @@
                     </p>
 
                 </div>
-
             }
 
         </div>

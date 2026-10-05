@@ -12,8 +12,8 @@ using complaint_mangement_system.Data;
 namespace complaint_mangement_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260913102830_staffrequest_added")]
-    partial class staffrequest_added
+    [Migration("20260929165226_one_admin")]
+    partial class one_admin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,30 +48,6 @@ namespace complaint_mangement_system.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("complaint_mangement_system.Models.Comment", b =>
-                {
-                    b.Property<int>("commentid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("commentid"));
-
-                    b.Property<string>("comment")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("complaintid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("userid")
-                        .HasColumnType("int");
-
-                    b.HasKey("commentid");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("complaint_mangement_system.Models.Complaint", b =>
                 {
                     b.Property<int>("complaintid")
@@ -96,21 +72,9 @@ namespace complaint_mangement_system.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("priority")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("resolvedat")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("staffid")
-                        .HasColumnType("int");
-
                     b.Property<string>("status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("updatedat")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("userid")
                         .HasColumnType("int");

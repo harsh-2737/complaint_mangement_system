@@ -29,5 +29,7 @@ namespace complaint_mangement_system.ViewModels
         [Required(ErrorMessage = "Category is required.")]
         [Display(Name = "Category")]
         public string categoryname { get; set; }
+
+        public DateTime createdAt { get; set; }
     }
 }

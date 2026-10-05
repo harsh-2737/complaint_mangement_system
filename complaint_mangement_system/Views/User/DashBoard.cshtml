@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Dashboard";
-    Layout = "~/Views/User/_Layout.cshtml";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
 <div class="container-fluid">
@@ -181,7 +181,7 @@
                                 <tr>
 
                                     <td>
-                                        #@complaint.complaintid
+                                        @complaint.complaintid
                                     </td>
 
                                     <td>
@@ -221,8 +221,7 @@
                                            asp-action="Update"
                                            asp-route-id="@complaint.complaintid"
                                            class="btn btn-sm btn-outline-primary">
-
-                                            <i class="bi bi-pencil"></i>
+                                           Update
 
                                         </a>
 
@@ -230,9 +229,7 @@
                                            asp-action="ConfirmDelete"
                                            asp-route-id="@complaint.complaintid"
                                            class="btn btn-sm btn-outline-danger">
-
-                                            <i class="bi bi-trash"></i>
-
+                                            Delete
                                         </a>
 
                                     </td>

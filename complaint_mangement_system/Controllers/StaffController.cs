@@ -86,17 +86,26 @@ namespace complaint_mangement_system.Controllers
         {
             int userid = GetUserId();
 
-            var staff = _context.Users
-                .FirstOrDefault(u =>
-                    u.userid == userid &&
-                    u.role == "Staff");
+            var user = _context.Users
+                .FirstOrDefault(u => u.userid == userid);
 
-            if (staff == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(staff);
+            var staffRequest = _context.StaffRequests
+                .FirstOrDefault(r => r.userid == userid);
+
+            if (staffRequest != null)
+            {
+                var category = _context.Categories
+                    .FirstOrDefault(c => c.categoryid == staffRequest.categoryid);
+
+                ViewBag.CategoryName = category?.categoryname;
+            }
+
+            return View(user);
         }
 
         [HttpPost]

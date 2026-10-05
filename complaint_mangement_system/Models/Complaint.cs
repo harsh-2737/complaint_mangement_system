@@ -29,9 +29,11 @@ namespace complaint_mangement_system.Models
 
         public DateTime createdat { get; set; }
 
-        public DateTime? updatedat { get; set; }
+        // adress
 
-        public DateTime? resolvedat { get; set; }
+        //public DateTime? updatedat { get; set; }
+
+        //public DateTime? resolvedat { get; set; }
     }
 
 }

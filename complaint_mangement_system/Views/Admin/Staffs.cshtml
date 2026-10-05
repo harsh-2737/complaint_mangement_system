@@ -8,7 +8,7 @@
 
 @{
     ViewData["Title"] = "Manage Staffs";
-    Layout = "~/Views/Admin/_Layout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container-fluid">
@@ -49,7 +49,7 @@
                             <tr>
                                 <th>Category ID</th>
                                 <th>Category</th>
-                                <th>Total Staff</th>
+                                <th>Total Members</th>
                                 <th>Staff Details</th>
                             </tr>
                         </thead>
@@ -61,7 +61,7 @@
                                 <tr>
 
                                     <td>
-                                        #@category.categoryid
+                                        @category.categoryid
                                     </td>
 
                                     <td>
